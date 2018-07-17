@@ -3,9 +3,12 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import { mountInThemeProvider } from '../../../../utils/enzymeUtils';
 import { ThemeProvider } from '../../themes';
+import Checkbox from '../../Checkbox';
 import Table from '../Table';
 import TableBase from '../TableBase';
+import TableBody from '../TableBody';
 import TableHeader from '../TableHeader';
+import TableRow from '../TableRow';
 import TableSortableHeaderCell from '../TableSortableHeaderCell';
 import examples from '../../../website/app/demos/Table/examples';
 import testDemoExamples from '../../../../utils/testDemoExamples';
@@ -15,10 +18,13 @@ const defaultProps = {
     { aa: 'aa0', ab: 'ab0', ac: 'ac0', ad: 'ad0' },
     { aa: 'aa2', ab: 'ab2', ac: 'ac2', ad: 'ad2' },
     { aa: 'aa1', ab: 'ab1', ac: 'ac1', ad: 'ad1' },
-    { aa: 'aa3', ab: 'ab3', ac: 'ac3', ad: 'ad3' }
+    { aa: 'aa3', ab: 'ab3', ac: 'ac3', ad: 'ad3', disabled: true }
   ],
   title: 'Test'
 };
+// $FlowFixMe
+const nonDisabledRowsLength = defaultProps.data.filter((item) => !item.disabled)
+  .length;
 
 function shallowTable(props = {}) {
   const tableProps = {
@@ -70,6 +76,204 @@ describe('Table', () => {
     const table = shallowTable();
 
     expect(table.exists()).toEqual(true);
+  });
+
+  describe('selectable', () => {
+    describe('defaultSelectedRows', () => {
+      it('does not select without selectable', () => {
+        const [, table] = mountTable({
+          defaultSelectedRows: [defaultProps.data[0]]
+        });
+
+        const selectedRows = table.find(TableBase).props().selectable;
+
+        expect(selectedRows).toEqual(undefined);
+      });
+
+      it('selects default rows', () => {
+        const [, table] = mountTable({
+          defaultSelectedRows: [defaultProps.data[0]],
+          selectable: true
+        });
+
+        const firstRowCheckbox = table
+          .find(TableBody)
+          .find(TableRow)
+          .at(0)
+          .find(Checkbox);
+        const headerCheckbox = table.find(TableHeader).find(Checkbox);
+
+        expect(headerCheckbox.props().indeterminate).toBeTrue;
+        expect(firstRowCheckbox.props().checked).toBeTrue;
+      });
+
+      it('does not select disabled rows', () => {
+        const [, table] = mountTable({
+          defaultSelectedRows: [defaultProps.data[3]],
+          selectable: true
+        });
+
+        const lastRowCheckbox = table
+          .find(TableBody)
+          .find(TableRow)
+          .at(3)
+          .find(Checkbox);
+        const headerCheckbox = table.find(TableHeader).find(Checkbox);
+
+        expect(
+          headerCheckbox.props().checked && headerCheckbox.props().indeterminate
+        ).toBeFalse;
+        expect(lastRowCheckbox.props().checked).toBeFalse;
+      });
+    });
+
+    describe('on click', () => {
+      describe('single row', () => {
+        it('selects row', () => {
+          const app = mountApp({
+            ...defaultProps,
+            selectable: true
+          });
+
+          let table = app.find(Table);
+
+          let firstRowCheckbox = table
+            .find(TableBody)
+            .find(TableRow)
+            .at(0)
+            .find('input[type="checkbox"]');
+          firstRowCheckbox.simulate('change');
+
+          app.update();
+          table = app.find(Table);
+
+          const headerCheckbox = table.find(TableHeader).find(Checkbox);
+          firstRowCheckbox = table
+            .find(TableBody)
+            .find(TableRow)
+            .at(0)
+            .find(Checkbox);
+
+          expect(headerCheckbox.props().indeterminate).toBeTrue;
+          expect(firstRowCheckbox.props().checked).toBeTrue;
+        });
+
+        it('deselects row when initially selected', () => {
+          const app = mountApp({
+            ...defaultProps,
+            defaultSelectedRows: [defaultProps.data[0]],
+            selectable: true
+          });
+
+          let table = app.find(Table);
+
+          let firstRowCheckbox = table
+            .find(TableBody)
+            .find(TableRow)
+            .at(0)
+            .find('input[type="checkbox"]');
+          firstRowCheckbox.simulate('change');
+
+          app.update();
+          table = app.find(Table);
+
+          const headerCheckbox = table.find(TableHeader).find(Checkbox);
+          firstRowCheckbox = table
+            .find(TableBody)
+            .find(TableRow)
+            .at(0)
+            .find(Checkbox);
+
+          expect(
+            headerCheckbox.props().checked &&
+              headerCheckbox.props().indeterminate
+          ).toBeFalse;
+          expect(firstRowCheckbox.props().checked).toBeFalse;
+        });
+      });
+
+      describe('all rows', () => {
+        it('selects all non-disabled rows when no rows initially selected', () => {
+          const app = mountApp({
+            ...defaultProps,
+            selectable: true
+          });
+
+          let table = app.find(Table);
+
+          const headerCheckbox = table
+            .find(TableHeader)
+            .find('input[type="checkbox"]');
+          headerCheckbox.simulate('change');
+
+          app.update();
+          table = app.find(Table);
+
+          const checkboxes = table
+            .find(TableBody)
+            .findWhere((n) => n.type() === Checkbox && n.props().checked);
+
+          expect(headerCheckbox.props().checked).toBeTrue;
+          expect(checkboxes.length).toEqual(nonDisabledRowsLength);
+        });
+
+        it('deselects all rows when some rows initially selected', () => {
+          const app = mountApp({
+            ...defaultProps,
+            defaultSelectedRows: [defaultProps.data[0]],
+            selectable: true
+          });
+
+          let table = app.find(Table);
+
+          const headerCheckbox = table
+            .find(TableHeader)
+            .find('input[type="checkbox"]');
+          headerCheckbox.simulate('change');
+
+          app.update();
+          table = app.find(Table);
+
+          const checkboxes = table
+            .find(TableBody)
+            .findWhere((n) => n.type() === Checkbox && n.props().checked);
+
+          expect(
+            headerCheckbox.props().checked &&
+              headerCheckbox.props().indeterminate
+          ).toBeFalse;
+          expect(checkboxes.length).toEqual(0);
+        });
+
+        it('deselects all rows when all rows initially selected', () => {
+          const app = mountApp({
+            ...defaultProps,
+            defaultSelectedRows: defaultProps.data,
+            selectable: true
+          });
+
+          let table = app.find(Table);
+
+          const headerCheckbox = table
+            .find(TableHeader)
+            .find('input[type="checkbox"]');
+          headerCheckbox.simulate('change');
+
+          app.update();
+          table = app.find(Table);
+
+          const checkboxes = table
+            .find(TableBody)
+            .findWhere((n) => n.type() === Checkbox && n.props().checked);
+
+          expect(
+            headerCheckbox.props().checked &&
+              headerCheckbox.props().indeterminate
+          ).toBeFalse;
+          expect(checkboxes.length).toEqual(0);
+        });
+      });
+    });
   });
 
   describe('sortable', () => {
