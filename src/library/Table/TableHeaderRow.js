@@ -80,7 +80,9 @@ export default class TableHeaderRow extends Component<Props> {
                 label || (typeof content === 'string' ? content : undefined),
               messages,
               sortable:
-                isSortable || columnSortable ? tableSortable : undefined,
+                columnSortable === false
+                  ? undefined
+                  : isSortable || columnSortable ? tableSortable : undefined,
               ...restColumn
             };
 

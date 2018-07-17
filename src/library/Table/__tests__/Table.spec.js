@@ -302,6 +302,22 @@ describe('Table', () => {
 
         expect(header.find(TableSortableHeaderCell).length).toEqual(1);
       });
+
+      it('makes only the appropriate columns sortable with sortable in Table and column definition', () => {
+        const [, table] = mountTable({
+          columns: [
+            { key: 'aa', content: 'AA', sortable: false },
+            { key: 'ab', content: 'AB' },
+            { key: 'ac', content: 'AC' },
+            { key: 'ad', content: 'AD' }
+          ],
+          data: defaultProps.data,
+          sortable: true
+        });
+        const header = table.find(TableHeader);
+
+        expect(header.find(TableSortableHeaderCell).length).toEqual(3);
+      });
     });
 
     describe('defaultSort', () => {
