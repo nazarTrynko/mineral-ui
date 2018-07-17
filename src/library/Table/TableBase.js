@@ -33,13 +33,13 @@ type Props = {
   title: React$Node,
   titleAppearance?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6',
   titleElement?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-} & Appearance;
+} & TableContextType;
 
 type State = {
   scrollable: boolean
 };
 
-type Appearance = {
+type TableContextType = {
   density?: 'compact' | 'spacious',
   highContrast?: boolean,
   striped?: boolean
@@ -88,7 +88,7 @@ const Root = createStyledComponent(
   }
 );
 
-export const TableContext: Context<Appearance> = createReactContext({});
+export const TableContext: Context<TableContextType> = createReactContext({});
 
 /**
  * Table displays structured data with columns and rows.
