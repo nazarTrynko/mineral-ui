@@ -5,14 +5,16 @@ import { mountInThemeProvider } from '../../../../utils/enzymeUtils';
 import { ThemeProvider } from '../../themes';
 import Table from '../Table';
 import TableBase from '../TableBase';
+import TableHeader from '../TableHeader';
+import TableSortableHeaderCell from '../TableSortableHeaderCell';
 import examples from '../../../website/app/demos/Table/examples';
 import testDemoExamples from '../../../../utils/testDemoExamples';
 
 const defaultProps = {
   data: [
     { aa: 'aa0', ab: 'ab0', ac: 'ac0', ad: 'ad0' },
-    { aa: 'aa1', ab: 'ab1', ac: 'ac1', ad: 'ad1' },
     { aa: 'aa2', ab: 'ab2', ac: 'ac2', ad: 'ad2' },
+    { aa: 'aa1', ab: 'ab1', ac: 'ac1', ad: 'ad1' },
     { aa: 'aa3', ab: 'ab3', ac: 'ac3', ad: 'ad3' }
   ],
   title: 'Test'
@@ -71,11 +73,37 @@ describe('Table', () => {
   });
 
   describe('sortable', () => {
-    describe('sort', () => {
-      it('without sortable', () => {
+    describe('enablement', () => {
+      it('makes all columns sortable with sortable on Table', () => {
         const [, table] = mountTable({
           data: defaultProps.data,
-          sort: { key: 'aa', descending: true }
+          sortable: true
+        });
+        const header = table.find(TableHeader);
+
+        expect(header.find(TableSortableHeaderCell).length).toEqual(4);
+      });
+
+      it('makes only the first column sortable with sortable in column definition', () => {
+        const [, table] = mountTable({
+          columns: [
+            { key: 'aa', content: 'AA', sortable: true },
+            { key: 'ab', content: 'AB' },
+            { key: 'ac', content: 'AC' },
+            { key: 'ad', content: 'AD' }
+          ],
+          data: defaultProps.data
+        });
+        const header = table.find(TableHeader);
+
+        expect(header.find(TableSortableHeaderCell).length).toEqual(1);
+      });
+    });
+
+    describe('defaultSort', () => {
+      it('sorts without sortable', () => {
+        const [, table] = mountTable({
+          defaultSort: { key: 'aa', descending: true }
         });
 
         const sortedData = table.find(TableBase).props().data;
@@ -83,10 +111,10 @@ describe('Table', () => {
         expect(sortedData).toMatchSnapshot();
       });
 
-      it('with sortable Table', () => {
+      it('sorts with sortable Table', () => {
         const [, table] = mountTable({
           data: defaultProps.data,
-          sort: { key: 'aa', descending: true },
+          defaultSort: { key: 'aa', descending: true },
           sortable: true
         });
 
@@ -95,7 +123,7 @@ describe('Table', () => {
         expect(sortedData).toMatchSnapshot();
       });
 
-      it('with sortable column', () => {
+      it('sorts with sortable column', () => {
         const [, table] = mountTable({
           columns: [
             { key: 'aa', content: 'AA', sortable: true },
@@ -104,7 +132,7 @@ describe('Table', () => {
             { key: 'ad', content: 'AD' }
           ],
           data: defaultProps.data,
-          sort: { key: 'aa', descending: true }
+          defaultSort: { key: 'aa', descending: true }
         });
 
         const sortedData = table.find(TableBase).props().data;
@@ -112,10 +140,10 @@ describe('Table', () => {
         expect(sortedData).toMatchSnapshot();
       });
 
-      it('with sortable Table and sortComparator', () => {
+      it('sorts with sortable Table and sortComparator', () => {
         const [, table] = mountTable({
           data: defaultProps.data,
-          sort: { key: 'aa', descending: true },
+          defaultSort: { key: 'aa', descending: true },
           sortable: true,
           sortComparator: () => 0
         });
@@ -125,7 +153,7 @@ describe('Table', () => {
         expect(sortedData).toMatchSnapshot();
       });
 
-      it('with sortable column and sortComparator', () => {
+      it('sorts with sortable column and sortComparator', () => {
         const tableSortComparator = jest.fn();
 
         const [, table] = mountTable({
@@ -141,7 +169,7 @@ describe('Table', () => {
             { key: 'ad', content: 'AD' }
           ],
           data: defaultProps.data,
-          sort: { key: 'aa', descending: true },
+          defaultSort: { key: 'aa', descending: true },
           sortComparator: tableSortComparator
         });
 
@@ -149,6 +177,74 @@ describe('Table', () => {
 
         expect(sortedData).toMatchSnapshot();
         expect(tableSortComparator).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('on click', () => {
+      let app, table;
+
+      beforeEach(() => {
+        // [, table] = mountTable({
+        //   data: defaultProps.data,
+        //   sortable: true
+        // });
+
+        app = mountApp({
+          ...defaultProps,
+          sortable: true
+        });
+
+        table = app.find(Table);
+      });
+
+      it('sorts ascending on first click', () => {
+        let headerCell = table.find(TableSortableHeaderCell).first();
+        const button = headerCell.find('button');
+
+        button.simulate('click');
+
+        app.update();
+        table = app.find(Table);
+
+        const sortedData = table.find(TableBase).props().data;
+
+        expect(sortedData).toMatchSnapshot();
+        expect(headerCell.html()).toMatchSnapshot();
+      });
+
+      it('toggles sort direction on second click', () => {
+        const headerCell = table.find(TableSortableHeaderCell).first();
+        const button = headerCell.find('button');
+
+        button.simulate('click');
+        button.simulate('click');
+
+        app.update();
+        table = app.find(Table);
+
+        const sortedData = table.find(TableBase).props().data;
+
+        expect(sortedData).toMatchSnapshot();
+        expect(headerCell.html()).toMatchSnapshot();
+      });
+
+      it('sorts ascending when sorted column changes', () => {
+        const headerCell = table.find(TableSortableHeaderCell).first();
+        const secondHeaderCell = table.find(TableSortableHeaderCell).at(1);
+        const button = headerCell.find('button');
+        const secondButton = secondHeaderCell.find('button');
+
+        button.simulate('click');
+        secondButton.simulate('click');
+
+        app.update();
+        table = app.find(Table);
+
+        const sortedData = table.find(TableBase).props().data;
+
+        expect(sortedData).toMatchSnapshot();
+        expect(headerCell.html()).toMatchSnapshot('Idle');
+        expect(secondHeaderCell.html()).toMatchSnapshot('Active');
       });
     });
 
@@ -166,7 +262,7 @@ describe('Table', () => {
           { aa: 'aa2', ab: 'ab2', ac: 'ac2', ad: 'ad2' },
           { aa: 'aa3', ab: 'ab3', ac: 'ac3', ad: 'ad3' }
         ],
-        sort: { key: 'aa', descending: true },
+        defaultSort: { key: 'aa', descending: true },
         sortable: true,
         title: 'Test'
       };

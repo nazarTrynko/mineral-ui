@@ -153,9 +153,12 @@ const getComparators = ({ columns }: Props) => {
 
 const getSelectableRows = (rows: Rows) => rows.filter((row) => !row.disabled);
 
-const getSortable = ({ columns, sort, sortable }: Props) =>
+const getSortable = ({ columns, defaultSort, sort, sortable }: Props) =>
   Boolean(
-    sort || sortable || (columns && columns.some((column) => column.sortable))
+    defaultSort ||
+      sort ||
+      sortable ||
+      (columns && columns.some((column) => column.sortable))
   );
 
 /**
