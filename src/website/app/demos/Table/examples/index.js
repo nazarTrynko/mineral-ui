@@ -3,7 +3,8 @@ import basic from './basic';
 import columnAlign from './columnAlign';
 import columnAlignWithSort from './columnAlignWithSort';
 import columnDef from './columnDef';
-import controlled from './controlled';
+import controlledSelectable from './controlledSelectable';
+import controlledSortable from './controlledSortable';
 import customCell from './customCell';
 import customHeaderCell from './customHeaderCell';
 import customRow from './customRow';
@@ -34,7 +35,8 @@ export default [
   striped,
   highContrast,
   scrollable,
-  controlled,
+  controlledSelectable,
+  controlledSortable,
   rtl,
   customCell,
   customHeaderCell,

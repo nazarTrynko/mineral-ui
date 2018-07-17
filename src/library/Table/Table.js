@@ -15,6 +15,11 @@ type Props = {
   data: Array<Object>,
   /** Initially selected rows when `selectable = true`. Primarily for use with uncontrolled components. */
   defaultSelectedRows?: Array<Object>,
+  /** Initially sorted column & direction. Primarily for use with uncontrolled components. */
+  defaultSort?: {
+    key: string,
+    descending?: boolean
+  },
   /** Amount of vertical space in Table's cells */
   density: 'compact' | 'spacious',
   /** Visually hide Table's header, but keep available for [assistive technologies](https://webaccess.berkeley.edu/resources/assistive-technology) */
@@ -29,7 +34,10 @@ type Props = {
    */
   messages: Messages,
   /** Called when data is sorted */
-  onSort?: (data: Array<Object>) => void,
+  onSort?: (sort: {
+    key: string,
+    descending?: boolean
+  }) => void,
   /** Called when all rows are selected/deselected */
   onToggleAllRows?: (rows: Array<Object>, selected: boolean) => void,
   /** Called when a single row is selected/deselected */
@@ -202,7 +210,7 @@ class Table extends Component<Props> {
       onToggleAllRows,
       selectable,
       selectedRows,
-      sortable: ignoreSortable,
+      sortable,
       ...restProps
     } = this.props;
 
@@ -217,7 +225,7 @@ class Table extends Component<Props> {
       ...(onToggleAllRows ? { onToggleAll: onToggleAllRows } : undefined),
       ...(selectedRows ? { selected: selectedRows } : undefined),
       ...(selectable ? { selectableRows: this.selectableRows } : undefined),
-      ...(this.sortable ? { sortable: this.sortable } : undefined)
+      ...(this.sortable ? { sortable } : undefined)
     };
 
     if (selectable && this.sortable) {
@@ -227,8 +235,11 @@ class Table extends Component<Props> {
     } else if (this.sortable) {
       return <SortableTable {...rootProps} />;
     } else {
-      // $FlowFixMe - The check in rootProps is the same as these ifs, but flow doesn't know that
-      return <TableBase {...rootProps} />;
+      const {
+        sortable: ignoreSortable,
+        ...rootPropsWithoutSortable
+      } = rootProps;
+      return <TableBase {...rootPropsWithoutSortable} />;
     }
   }
 }

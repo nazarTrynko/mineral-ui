@@ -153,7 +153,7 @@ export default {
       data={rows}
       selectable
       selectedRows={[rows[0]]}
-      sort={{ key: 'aa' }}
+      defaultSort={{ key: 'aa' }}
       highContrast
       rowKey="aa"
       density="spacious"

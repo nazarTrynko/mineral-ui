@@ -6,11 +6,11 @@ import Table from '../../../../../library/Table';
 import data from '../shared/data';
 
 export default {
-  id: 'controlled',
-  title: 'Controlled',
+  id: 'controlled-selectable',
+  title: 'Controlled - Selectable Rows',
   description: `Table controls its own state by default, and can optionally
-be managed by the application as a controlled component via the control props,
-\`selectedRows\` and \`sort\`.`,
+be managed by the application as a controlled component via the control prop
+\`selectedRows\`.`,
   scope: { Button, Component, Table, Flex, FlexItem, data },
   source: `
     () => {

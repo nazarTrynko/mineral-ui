@@ -8,10 +8,10 @@ export default {
   description: `Users can sort the rows in Table by column, enabled via the
 \`sortable\` prop. If the default sorting function, below, is insufficient for
 your needs, you can supply your own with the \`sortComparator\` prop. You can
-set the sorted column & direction with the \`sort\` prop, and an \`onSort\`
-callback is also available. Note that the \`sortable\` & \`sortComparator\`
-properties can be applied to Table via props or to individual columns via
-[column definition](/components/table/#Column-type).
+set the initially sorted column & direction with the \`defaultSort\` prop, and
+an \`onSort\` callback is also available. Note that the \`sortable\` &
+\`sortComparator\` properties can be applied to Table via props or to individual
+columns via [column definition](/components/table/#Column-type).
 
 \`\`\`
 // Coerce null & undefined values to an empty string and normalize letter casing
@@ -54,7 +54,7 @@ alphabetically.
           columns={columns}
           data={sharedData}
           rowKey="Fruits"
-          sort={{ key: 'Fruits' }}
+          defaultSort={{ key: 'Fruits' }}
           title="Delicious Foods"
           hideTitle />
       );

@@ -1,18 +1,17 @@
 /* @flow */
 import { Component } from 'react';
-import deepEqual from 'fast-deep-equal';
 
 type Props = {
   children: (props: Object) => React$Node,
   comparators?: Comparators,
   data: Data,
-  onSort?: (data: Data) => void,
+  defaultSort?: Sort,
+  onSort?: (sort: Sort) => void,
   sort?: Sort,
   sortComparator: SortComparator
 };
 
 export type State = {
-  data: Data,
   sort: ?Sort
 };
 
@@ -27,11 +26,7 @@ export type SortComparator = (a: Object, b: Object, key: string) => -1 | 0 | 1;
 
 export type Comparators = { [string]: SortComparator };
 
-type SortFn = (
-  key: string,
-  comparator?: SortComparator,
-  toggle?: boolean
-) => void;
+type SortFn = (Sort) => void;
 
 export type SortableType = {
   data: Data,
@@ -57,88 +52,63 @@ export default class Sortable extends Component<Props, State> {
   };
 
   state = {
-    data: this.props.data,
-    sort: undefined
-  };
-
-  componentDidMount() {
-    const { comparators, sort } = this.props;
-
-    if (sort) {
-      // NOTE: This causes an extra render. Better to set initial state in constructor.
-      this.sortDefault(
-        sort.key,
-        comparators ? comparators[sort.key] : undefined
-      );
-    }
-  }
-
-  // TODO: Best approach?
-  componentWillReceiveProps(nextProps: Props) {
-    if (!deepEqual(this.props.data, nextProps.data)) {
-      this.setState({
-        data: nextProps.data
-      });
-    }
-  }
-
-  sortDefault: SortFn = (key, sortComparatorParam) => {
-    const { sort } = this.props;
-    const sortComparator = sortComparatorParam || this.props.sortComparator;
-    const descending = sort ? sort.descending : false;
-
-    this.setState(({ data }) => ({
-      sort: {
-        key,
-        descending
-      },
-      data: data.slice(0).sort((a, b) => {
-        const asc = sortComparator(a, b, key);
-        const desc = asc * -1;
-        return descending ? desc : asc;
-      })
-    }));
-  };
-
-  sort: SortFn = (key, sortComparatorParam, toggle) => {
-    const { onSort } = this.props;
-    const sortComparator = sortComparatorParam || this.props.sortComparator;
-
-    this.setState(
-      ({ data, sort }) => {
-        const descending =
-          sort && sort.key
-            ? toggle ? !sort.descending : sort.descending
-            : false;
-
-        return {
-          sort: {
-            key,
-            descending
-          },
-          data: data.slice(0).sort((a, b) => {
-            const asc = sortComparator(a, b, key);
-            const desc = asc * -1;
-            return descending ? desc : asc;
-          })
-        };
-      },
-      () => {
-        onSort && this.state.sort && onSort(this.state.data); // TODO: Pass data and sort?
-      }
-    );
+    sort: this.props.defaultSort
   };
 
   render() {
+    const sort = this.getControllableValue('sort');
+
     const props = {
       ...this.props,
       sortable: {
-        data: this.state.data,
-        sort: this.state.sort,
+        data: sort ? this.sortData() : this.props.data,
+        sort,
         sortFn: this.sort
       }
     };
 
     return this.props.children(props);
   }
+
+  sort: SortFn = (sort) => {
+    if (this.isControlled('sort')) {
+      this.sortActions(sort);
+    } else {
+      this.setState(
+        {
+          sort
+        },
+        () => {
+          this.sortActions(sort);
+        }
+      );
+    }
+  };
+
+  sortActions = (sort: Sort) => {
+    const { onSort } = this.props;
+    onSort && onSort(sort);
+  };
+
+  sortData = () => {
+    const { comparators, data } = this.props;
+    const sort = this.getControllableValue('sort');
+
+    const sortComparator =
+      (comparators && comparators[sort.key]) || this.props.sortComparator;
+
+    return data.slice(0).sort((a, b) => {
+      const asc = sortComparator(a, b, sort.key);
+      const desc = asc * -1;
+      return sort.descending ? desc : asc;
+    });
+  };
+
+  isControlled = (prop: string) => {
+    return this.props.hasOwnProperty(prop);
+  };
+
+  getControllableValue = (key: string) => {
+    return this.isControlled(key) ? this.props[key] : this.state[key];
+  };
 }

@@ -5,7 +5,7 @@ import IconArrowDropdownDown from '../Icon/IconArrowDropdownDown';
 import IconArrowDropdownUp from '../Icon/IconArrowDropdownUp';
 import TableHeaderCell from './TableHeaderCell';
 
-import type { SortableType, SortComparator } from './Sortable';
+import type { SortableType } from './Sortable';
 import type { Messages } from './Table';
 
 type Props = {
@@ -17,8 +17,6 @@ type Props = {
   name: string,
   /** See Table */
   sortable: SortableType,
-  /** See Table's Column type */
-  sortComparator?: SortComparator,
   /** See Table */
   messages: Messages
 };
@@ -127,13 +125,12 @@ export default function TableSortableHeaderCell({
   name,
   messages,
   sortable,
-  sortComparator,
   ...restProps
 }: Props) {
   const { sort, sortFn } = sortable;
 
   const sortColumn = sort && sort.key;
-  const descending = sort && sort.descending;
+  const descending = sort ? sort.descending : false;
 
   const isActiveSort = sortColumn === name;
   const activeDirection = descending ? 'descending' : 'ascending';
@@ -142,7 +139,8 @@ export default function TableSortableHeaderCell({
       ? 'descending'
       : 'ascending';
 
-  const shouldToggle = isActiveSort || activeDirection !== nextDirection;
+  const toggle = isActiveSort || activeDirection !== nextDirection;
+  const nextDescending = toggle ? !descending : descending;
 
   const a11yLabel = label || children;
 
@@ -165,7 +163,7 @@ export default function TableSortableHeaderCell({
         ? messages.sortColumnAscending
         : messages.sortColumnDescending,
     onClick: () => {
-      sortFn(name, sortComparator, shouldToggle);
+      sortFn({ key: name, descending: nextDescending });
     }
   };
   const iconHolderProps = {
