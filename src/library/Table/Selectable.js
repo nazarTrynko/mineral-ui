@@ -2,54 +2,43 @@
 import { Component } from 'react';
 import deepEqual from 'fast-deep-equal';
 
-type Props<T> = {
+type Props = {
   children: (props: Object) => React$Node,
-  data: Data<T>,
-  defaultSelected?: Data<T>,
-  onToggle?: (item: T, selected: boolean) => void,
-  onToggleAll?: (items: Array<T>, selected: boolean) => void,
-  selected?: Data<T>
+  data: Data,
+  defaultSelected?: Data,
+  onToggle?: (item: Item, selected: boolean) => void,
+  onToggleAll?: (items: Data, selected: boolean) => void,
+  selected?: Data
 };
 
-export type State<T> = {
-  selected: Array<T>
+export type State = {
+  selected: Data
 };
 
-type Data<T> = Array<T>;
-// TODO: `rowData` should be T, but that would require passing T from Table
+type Data = Array<Item>;
+type Item = {
+  disabled?: boolean
+};
 export type SelectableType = {
   all: boolean,
   some: boolean,
-  isSelected: (rowData: Object) => boolean,
+  isSelected: (item: Item) => boolean,
   toggle: Toggle,
   toggleAll: ToggleAll
 };
-export type Toggle = (rowData: Object) => void;
+export type Toggle = (item: Item) => void;
 export type ToggleAll = () => void;
 
-const getSelectableItems = (data: Data<T>) =>
-  data.filter((item) => !item.disabled);
+export default class Selectable extends Component<Props, State> {
+  state = {
+    selected: this.props.defaultSelected || []
+  };
 
-export default class Selectable<T> extends Component<Props<T>, State<T>> {
-  constructor(props: Props<T>) {
-    super(props);
-
-    this.state = {
-      selected: props.defaultSelected || []
-    };
-  }
-
-  selectableItems: Data<T> = getSelectableItems(this.props.data);
-
-  componentWillReceiveProps(nextProps: Props<T>) {
+  componentWillReceiveProps(nextProps: Props) {
     if (!deepEqual(this.props.selected, nextProps.selected)) {
       this.setState({
         selected: nextProps.selected
       });
-    }
-
-    if (!deepEqual(this.props.data, nextProps.data)) {
-      this.selectableItems = getSelectableItems(nextProps.data);
     }
   }
 
@@ -69,7 +58,7 @@ export default class Selectable<T> extends Component<Props<T>, State<T>> {
     return this.props.children(props);
   }
 
-  toggle = (item: T) => {
+  toggle = (item: Item) => {
     if (this.isControlled('selected')) {
       this.toggleActions(item);
     } else {
@@ -91,7 +80,7 @@ export default class Selectable<T> extends Component<Props<T>, State<T>> {
     }
   };
 
-  toggleActions = (item: T) => {
+  toggleActions = (item: Item) => {
     const { onToggle } = this.props;
     onToggle && onToggle(item, this.isSelected(item));
   };
@@ -103,23 +92,21 @@ export default class Selectable<T> extends Component<Props<T>, State<T>> {
       this.setState(() => {
         return {
           selected:
-            this.allSelected() || this.someSelected()
-              ? []
-              : this.selectableItems
+            this.allSelected() || this.someSelected() ? [] : this.props.data
         };
       }, this.toggleAllActions);
     }
   };
 
   toggleAllActions = () => {
-    const { onToggleAll } = this.props;
+    const { data, onToggleAll } = this.props;
     const all = !this.allSelected();
-    onToggleAll && onToggleAll(all ? this.selectableItems : [], all);
+    onToggleAll && onToggleAll(all ? data : [], all);
   };
 
   allSelected = () => {
     const selected = this.getControllableValue('selected');
-    return selected && selected.length === this.selectableItems.length;
+    return selected && selected.length === this.props.data.length;
   };
 
   someSelected = () => {
@@ -128,7 +115,7 @@ export default class Selectable<T> extends Component<Props<T>, State<T>> {
     return selected && selected.length > 0 && !all;
   };
 
-  isSelected = (item: T) => {
+  isSelected = (item: Item) => {
     const selected = this.getControllableValue('selected');
     return selected && selected.indexOf(item) !== -1;
   };

@@ -29,7 +29,7 @@ type Props = {
   rowKey?: string,
   scrollable?: boolean,
   selectable?: SelectableType,
-  sortable?: SortableType | boolean,
+  sortable?: SortableType,
   title: React$Node,
   titleAppearance?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6',
   titleElement?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'

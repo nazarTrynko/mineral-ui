@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
+import deepEqual from 'fast-deep-equal';
 import Selectable from './Selectable';
 import Sortable from './Sortable';
 import TableBase from './TableBase';
@@ -110,7 +111,6 @@ export type RenderProps = {
   props: Object
 } & StateAndHelpers;
 type StateAndHelpers = {
-  // TODO: Would require passing T in to SelectableState
   state?: SelectableState & SortableState,
   helpers?: Helpers
 };
@@ -143,6 +143,8 @@ const getComparators = ({ columns }: Props) => {
     : undefined;
 };
 
+const getSelectableRows = (rows: Rows) => rows.filter((row) => !row.disabled);
+
 const getSortable = ({ columns, sort, sortable }: Props) =>
   Boolean(
     sort || sortable || (columns && columns.some((column) => column.sortable))
@@ -170,21 +172,25 @@ class Table extends Component<Props> {
 
   comparators: Comparators | typeof undefined = getComparators(this.props);
 
+  selectableRows: Rows = getSelectableRows(this.props.data);
+
   sortable: boolean = getSortable(this.props);
 
   componentWillUpdate(nextProps: Props) {
-    // TODO: deepEquals?
-    console.log('Table.componentWillUpdate()');
-    if (
-      this.props.columns !== nextProps.columns ||
-      (!this.props.columns && this.props.data !== nextProps.data)
-    ) {
+    const columnsChanged = !deepEqual(this.props.columns, nextProps.columns);
+    const dataChanged = !deepEqual(this.props.data, nextProps.data);
+
+    if (columnsChanged || (!this.props.columns && dataChanged)) {
       this.columns = getColumns(nextProps);
     }
 
-    if (this.props.columns !== nextProps.columns) {
+    if (columnsChanged) {
       this.sortable = getSortable(nextProps);
       this.comparators = getComparators(nextProps);
+    }
+
+    if (dataChanged) {
+      this.selectableRows = getSelectableRows(nextProps.data);
     }
   }
 
@@ -196,6 +202,7 @@ class Table extends Component<Props> {
       onToggleAllRows,
       selectable,
       selectedRows,
+      sortable: ignoreSortable,
       ...restProps
     } = this.props;
 
@@ -208,7 +215,9 @@ class Table extends Component<Props> {
         : undefined),
       ...(onToggleRow ? { onToggle: onToggleRow } : undefined),
       ...(onToggleAllRows ? { onToggleAll: onToggleAllRows } : undefined),
-      ...(selectedRows ? { selected: selectedRows } : undefined)
+      ...(selectedRows ? { selected: selectedRows } : undefined),
+      ...(selectable ? { selectableRows: this.selectableRows } : undefined),
+      ...(this.sortable ? { sortable: this.sortable } : undefined)
     };
 
     if (selectable && this.sortable) {
@@ -218,25 +227,36 @@ class Table extends Component<Props> {
     } else if (this.sortable) {
       return <SortableTable {...rootProps} />;
     } else {
+      // $FlowFixMe - The check in rootProps is the same as these ifs, but flow doesn't know that
       return <TableBase {...rootProps} />;
     }
   }
 }
 
-const SelectableTable = (props) => (
-  <Selectable {...props}>{(props) => <TableBase {...props} />}</Selectable>
-);
-
 /* eslint-disable react/prop-types */
+const SelectableTable = (props) => {
+  const { data, selectableRows } = props;
+  return (
+    <Selectable {...props} data={selectableRows}>
+      {(props) => <TableBase {...props} data={data} />}
+    </Selectable>
+  );
+};
+
 const SortableTable = (props) => (
   <Sortable {...props} isSortable={props.sortable}>
     {({ ...props }) => <TableBase {...props} data={props.sortable.data} />}
   </Sortable>
 );
-/* eslint-enable */
 
-const SelectableSortableTable = (props) => (
-  <Selectable {...props}>{(props) => <SortableTable {...props} />}</Selectable>
-);
+const SelectableSortableTable = (props) => {
+  const { data, selectableRows } = props;
+  return (
+    <Selectable {...props} data={selectableRows}>
+      {(props) => <SortableTable {...props} data={data} />}
+    </Selectable>
+  );
+};
+/* eslint-enable */
 
 export default Table;
