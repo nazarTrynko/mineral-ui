@@ -12,6 +12,7 @@ import { TableContext } from './TableBase';
 
 type Props = {
   checked?: boolean,
+  disabled?: boolean,
   indeterminate?: boolean,
   isHeader?: boolean,
   label: string,
@@ -51,6 +52,7 @@ export default class TableSelectableCell extends Component<Props> {
     console.log('render TableSelectableCell');
     const {
       checked,
+      disabled,
       indeterminate,
       isHeader,
       label,
@@ -66,6 +68,7 @@ export default class TableSelectableCell extends Component<Props> {
     };
     const checkboxProps = {
       checked,
+      disabled,
       hideLabel: true,
       indeterminate,
       isHeader,

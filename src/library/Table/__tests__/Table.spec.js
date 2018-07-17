@@ -173,13 +173,9 @@ describe('Table', () => {
 
       const app = mountApp(props);
 
-      console.log(app.html());
-
       app.setState({
         data: [...props.data, { aa: 'aa4', ab: 'ab4', ac: 'ac4', ad: 'ad4' }]
       });
-
-      console.log(app.html());
 
       expect(app.exists()).toEqual(true);
     });

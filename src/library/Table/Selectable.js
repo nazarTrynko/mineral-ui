@@ -5,15 +5,14 @@ import deepEqual from 'fast-deep-equal';
 type Props<T> = {
   children: (props: Object) => React$Node,
   data: Data<T>,
+  defaultSelected?: Data<T>,
   onToggle?: (item: T, selected: boolean) => void,
   onToggleAll?: (items: Array<T>, selected: boolean) => void,
   selected?: Data<T>
 };
 
 export type State<T> = {
-  all: boolean,
-  selected: Array<T>,
-  some: boolean
+  selected: Array<T>
 };
 
 type Data<T> = Array<T>;
@@ -28,84 +27,39 @@ export type SelectableType = {
 export type Toggle = (rowData: Object) => void;
 export type ToggleAll = () => void;
 
+const getSelectableItems = (data: Data<T>) =>
+  data.filter((item) => !item.disabled);
+
 export default class Selectable<T> extends Component<Props<T>, State<T>> {
   constructor(props: Props<T>) {
     super(props);
 
-    this.state = this.getStateFromProps(props);
+    this.state = {
+      selected: props.defaultSelected || []
+    };
   }
+
+  selectableItems: Data<T> = getSelectableItems(this.props.data);
 
   componentWillReceiveProps(nextProps: Props<T>) {
-    if (
-      !deepEqual(this.props.selected, nextProps.selected) ||
-      !deepEqual(this.props.data, nextProps.data)
-    ) {
-      this.setState(this.getStateFromProps(nextProps));
+    if (!deepEqual(this.props.selected, nextProps.selected)) {
+      this.setState({
+        selected: nextProps.selected
+      });
+    }
+
+    if (!deepEqual(this.props.data, nextProps.data)) {
+      this.selectableItems = getSelectableItems(nextProps.data);
     }
   }
-
-  getStateFromProps = (props: Props<T>) => {
-    const selected = props.selected || [];
-    const all = selected.length === props.data.length;
-    const some = selected.length > 0 && !all;
-
-    return {
-      all,
-      some,
-      selected
-    };
-  };
-
-  isSelected = (item: T) => {
-    return this.state.selected.indexOf(item) !== -1;
-  };
-
-  toggle = (item: T) => {
-    this.setState(
-      (prevState) => {
-        const selected = prevState.selected.slice(0);
-        const index = selected.indexOf(item);
-        const hasItem = index !== -1;
-        hasItem ? selected.splice(index, 1) : selected.push(item);
-
-        const all = selected.length === this.props.data.length;
-        return {
-          all,
-          selected,
-          some: selected.length > 0 && !all
-        };
-      },
-      () => {
-        const { onToggle } = this.props;
-        onToggle && onToggle(item, this.isSelected(item));
-      }
-    );
-  };
-
-  toggleAll = () => {
-    this.setState(
-      ({ all, some }) => {
-        return {
-          all: !all && !some,
-          some: false,
-          // TODO: Account for disabled, store in instance var
-          selected: all || some ? [] : this.props.data
-        };
-      },
-      () => {
-        const { data, onToggleAll } = this.props;
-        const { all } = this.state;
-
-        onToggleAll && onToggleAll(all ? data : [], all);
-      }
-    );
-  };
 
   render() {
     const props = {
       ...this.props,
       selectable: {
         ...this.state,
+        all: this.allSelected(),
+        some: this.someSelected(),
         isSelected: this.isSelected,
         toggle: this.toggle,
         toggleAll: this.toggleAll
@@ -114,4 +68,76 @@ export default class Selectable<T> extends Component<Props<T>, State<T>> {
 
     return this.props.children(props);
   }
+
+  toggle = (item: T) => {
+    if (this.isControlled('selected')) {
+      this.toggleActions(item);
+    } else {
+      this.setState(
+        (prevState) => {
+          const selected = prevState.selected.slice(0);
+          const index = selected.indexOf(item);
+          const hasItem = index !== -1;
+          hasItem ? selected.splice(index, 1) : selected.push(item);
+
+          return {
+            selected
+          };
+        },
+        () => {
+          this.toggleActions(item);
+        }
+      );
+    }
+  };
+
+  toggleActions = (item: T) => {
+    const { onToggle } = this.props;
+    onToggle && onToggle(item, this.isSelected(item));
+  };
+
+  toggleAll = () => {
+    if (this.isControlled('selected')) {
+      this.toggleAllActions();
+    } else {
+      this.setState(() => {
+        return {
+          selected:
+            this.allSelected() || this.someSelected()
+              ? []
+              : this.selectableItems
+        };
+      }, this.toggleAllActions);
+    }
+  };
+
+  toggleAllActions = () => {
+    const { onToggleAll } = this.props;
+    const all = !this.allSelected();
+    onToggleAll && onToggleAll(all ? this.selectableItems : [], all);
+  };
+
+  allSelected = () => {
+    const selected = this.getControllableValue('selected');
+    return selected && selected.length === this.selectableItems.length;
+  };
+
+  someSelected = () => {
+    const selected = this.getControllableValue('selected');
+    const all = this.allSelected();
+    return selected && selected.length > 0 && !all;
+  };
+
+  isSelected = (item: T) => {
+    const selected = this.getControllableValue('selected');
+    return selected && selected.indexOf(item) !== -1;
+  };
+
+  isControlled = (prop: string) => {
+    return this.props.hasOwnProperty(prop);
+  };
+
+  getControllableValue = (key: string) => {
+    return this.isControlled(key) ? this.props[key] : this.state[key];
+  };
 }

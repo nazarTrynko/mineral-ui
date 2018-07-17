@@ -43,9 +43,10 @@ export default class TableDataRow extends Component<Props> {
     if (selectable) {
       children.unshift(
         <TableSelectableCell
+          checked={checked}
+          disabled={data.disabled}
           key="selectable"
           label={checked ? messages.deselectRow : messages.selectRow}
-          checked={checked}
           onChange={this.toggle}
         />
       );

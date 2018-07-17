@@ -12,6 +12,8 @@ type Props = {
   columns?: Columns,
   /** Row data ([see example for more details](#basic)) */
   data: Array<Object>,
+  /** Initially selected rows when `selectable = true`. Primarily for use with uncontrolled components. */
+  defaultSelectedRows?: Array<Object>,
   /** Amount of vertical space in Table's cells */
   density: 'compact' | 'spacious',
   /** Visually hide Table's header, but keep available for [assistive technologies](https://webaccess.berkeley.edu/resources/assistive-technology) */
@@ -47,7 +49,8 @@ type Props = {
    */
   selectable?: boolean,
   /**
-   * Selected rows when `selectable = true`.
+   * Selected rows when `selectable = true`. Primarily for use with controlled
+   * components.
    */
   selectedRows?: Array<Object>,
   /**
@@ -170,6 +173,8 @@ class Table extends Component<Props> {
   sortable: boolean = getSortable(this.props);
 
   componentWillUpdate(nextProps: Props) {
+    // TODO: deepEquals?
+    console.log('Table.componentWillUpdate()');
     if (
       this.props.columns !== nextProps.columns ||
       (!this.props.columns && this.props.data !== nextProps.data)
@@ -186,10 +191,11 @@ class Table extends Component<Props> {
   render() {
     console.log('render Table');
     const {
-      onToggleRow: onToggle,
-      onToggleAllRows: onToggleAll,
+      defaultSelectedRows,
+      onToggleRow,
+      onToggleAllRows,
       selectable,
-      selectedRows: selected,
+      selectedRows,
       ...restProps
     } = this.props;
 
@@ -197,9 +203,12 @@ class Table extends Component<Props> {
       ...restProps,
       columns: this.columns,
       comparators: this.comparators,
-      onToggle,
-      onToggleAll,
-      selected
+      ...(defaultSelectedRows
+        ? { defaultSelected: defaultSelectedRows }
+        : undefined),
+      ...(onToggleRow ? { onToggle: onToggleRow } : undefined),
+      ...(onToggleAllRows ? { onToggleAll: onToggleAllRows } : undefined),
+      ...(selectedRows ? { selected: selectedRows } : undefined)
     };
 
     if (selectable && this.sortable) {
