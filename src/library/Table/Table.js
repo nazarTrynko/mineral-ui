@@ -222,7 +222,7 @@ class Table extends Component<Props> {
       columns: this.columns,
       comparators: this.comparators,
       ...(defaultSelectedRows
-        ? { defaultSelected: defaultSelectedRows }
+        ? { defaultSelected: getSelectableRows(defaultSelectedRows) }
         : undefined),
       ...(onToggleRow ? { onToggle: onToggleRow } : undefined),
       ...(onToggleAllRows ? { onToggleAll: onToggleAllRows } : undefined),
