@@ -4,12 +4,12 @@ import sharedData from '../shared/data';
 
 export default {
   id: 'sortable',
-  title: 'Sort by Column(s)',
+  title: 'Sortable Columns',
   description: `Users can sort the rows in Table by column, enabled via the
 \`sortable\` prop. If the default sorting function, below, is insufficient for
 your needs, you can supply your own with the \`sortComparator\` prop. You can
-set the initially sorted column & direction with the \`defaultSort\` prop, and
-an \`onSort\` callback is also available. Note that the \`sortable\` &
+set the initially sorted column & direction with the \`defaultSort\` prop. An
+\`onSort\` callback is also available. Note that the \`sortable\` &
 \`sortComparator\` properties can be applied to Table via props or to individual
 columns via [column definition](/components/table/#Column-type).
 
@@ -42,11 +42,11 @@ alphabetically.
       };
 
       const columns = [
-        { content: 'Fresh Fruits', key: 'Fruits', sortable: true },
-        { content: 'Veritable Vegetables', key: 'Vegetables', sortable: true },
-        { content: 'Grains', key: 'Grains', sortable: true },
-        { content: 'Delectable Dairy', key: 'Dairy', sortable: true, sortComparator: sortByLength },
-        { content: 'Protein', key: 'Protein' }
+        { content: 'Fruits', key: 'Fruits' },
+        { content: 'Vegetables', key: 'Vegetables' },
+        { content: 'Grains', key: 'Grains' },
+        { content: 'Dairy', key: 'Dairy', sortComparator: sortByLength },
+        { content: 'Protein', key: 'Protein', sortable: false }
       ];
 
       return (
@@ -55,7 +55,8 @@ alphabetically.
           data={sharedData}
           rowKey="Fruits"
           defaultSort={{ key: 'Fruits' }}
-          title="Delicious Foods"
+          sortable
+          title="Foods of the World"
           hideTitle />
       );
     }`

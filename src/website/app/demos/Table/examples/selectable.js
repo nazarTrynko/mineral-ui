@@ -8,7 +8,7 @@ export default {
   description: `Allow users to select rows with the \`selectable\` prop.
 Rows with a \`disabled\` property set to \`true\` will render a disabled
 checkbox. You can set the initially selected rows with the
-\`defaultSelectedRows\` prop, and \`onToggleRow\` and \`onToggleAllRows\`
+\`defaultSelectedRows\` prop. \`onToggleRow\` and \`onToggleAllRows\`
 callbacks are also available.`,
   scope: { Table, sharedData },
   source: `
@@ -25,7 +25,7 @@ callbacks are also available.`,
           defaultSelectedRows={[data[1]]}
           data={data}
           rowKey="Fruits"
-          title="Delicious Foods"
+          title="Foods of the World"
           hideTitle />
       );
     }`

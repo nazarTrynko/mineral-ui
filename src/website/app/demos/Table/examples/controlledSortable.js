@@ -8,8 +8,8 @@ import data from '../shared/data';
 export default {
   id: 'controlled-sortable',
   title: 'Controlled - Sortable Columns',
-  description: `Table controls its own state by default, and can optionally
-be managed by the application as a controlled component via the control prop
+  description: `Table controls its own sort state by default. It can optionally
+be managed by the application as a controlled component via the control prop,
 \`sort\`.`,
   scope: { Button, Component, Table, Flex, FlexItem, data },
   source: `
@@ -80,7 +80,7 @@ be managed by the application as a controlled component via the control prop
                 sortable
                 sort={this.state.sort}
                 onSort={this.handleSort}
-                title="Delicious Foods"
+                title="Foods of the World"
                 hideTitle />
             </div>
           );

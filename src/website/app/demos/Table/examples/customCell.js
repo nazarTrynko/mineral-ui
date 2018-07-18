@@ -113,7 +113,7 @@ Some things to keep in mind:
           columns={columns}
           data={sharedData}
           rowKey="Fruits"
-          title="Delicious Foods"
+          title="Foods of the World"
           hideTitle />
       );
     }`

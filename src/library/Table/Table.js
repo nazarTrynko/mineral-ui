@@ -71,7 +71,10 @@ type Props = {
   },
   /** Enable the user to sort all columns */
   sortable?: boolean,
-  /** The sort comparator function used by sortable columns */
+  /**
+   * The [sort comparator function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Description)
+   * used by sortable columns
+   */
   sortComparator?: (a: Object, b: Object, key: string) => -1 | 0 | 1,
   /** Renders Table with alternating row stripes */
   striped?: boolean,
@@ -89,13 +92,13 @@ export type Columns = Array<Column>;
 type Column = {
   cell?: RenderFn,
   content: React$Node,
-  sortable?: boolean,
   header?: RenderFn,
   key: string,
   label?: string,
   maxWidth?: number | string,
   minWidth?: number | string,
   primary?: boolean,
+  sortable?: boolean,
   sortComparator?: (a: Object, b: Object, key: string) => -1 | 1 | 0,
   textAlign?: 'start' | 'end' | 'center' | 'justify',
   width?: number | string

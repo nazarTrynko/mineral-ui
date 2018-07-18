@@ -63,8 +63,24 @@ export default {
           description:
             'Render cells in the column as `<th scope="row" />` ([see example](#primary-column))'
         },
-        textAlign: {
+        sortable: {
           flowType: { name: 'boolean' },
+          required: false,
+          description:
+            'Enable user to sort the column ([see example](#sortable))'
+        },
+        sortComparator: {
+          flowType: {
+            name: 'signature',
+            raw: '(a: Object, b: Object, key: string) => -1 | 0 | 1',
+            type: 'function'
+          },
+          required: false,
+          description:
+            'Define a custom [comparator function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Description) for the column ([see example](#sort-by-columns))'
+        },
+        textAlign: {
+          flowType: { name: `'start', 'end', 'center', 'justify'` },
           required: false,
           description:
             'Align the text of both the column header and the cells ([see example](#column-align))'

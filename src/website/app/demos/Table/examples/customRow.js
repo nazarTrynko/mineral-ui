@@ -110,7 +110,7 @@ Some things to keep in mind:
         <Table
           data={data}
           rowKey="Fruits"
-          title="Delicious Foods"
+          title="Foods of the World"
           hideTitle />
       );
     }`

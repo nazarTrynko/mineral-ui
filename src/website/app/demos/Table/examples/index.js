@@ -1,7 +1,7 @@
 /* @flow */
+import alignment from './alignment';
 import basic from './basic';
 import columnAlign from './columnAlign';
-import columnAlignWithSort from './columnAlignWithSort';
 import columnDef from './columnDef';
 import controlledSelectable from './controlledSelectable';
 import controlledSortable from './controlledSortable';
@@ -40,7 +40,7 @@ export default [
   customCell,
   customHeaderCell,
   customRow,
-  columnAlignWithSort,
+  alignment,
   largeDataSets,
   kitchenSink
 ];
