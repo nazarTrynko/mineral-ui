@@ -1,6 +1,6 @@
 /* @flow */
 import { Component } from 'react';
-import deepEqual from 'fast-deep-equal';
+import deepEqual from 'react-fast-compare';
 
 type Props = {
   children: (props: Object) => React$Node,

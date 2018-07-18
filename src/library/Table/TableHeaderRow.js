@@ -1,6 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
-import deepEqual from 'fast-deep-equal';
+import deepEqual from 'react-fast-compare';
 import TableSelectableCell from './TableSelectableCell';
 import TableHeaderCell from './TableHeaderCell';
 import TableSortableHeaderCell from './TableSortableHeaderCell';

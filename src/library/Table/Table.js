@@ -1,6 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
-import deepEqual from 'fast-deep-equal';
+import deepEqual from 'react-fast-compare';
 import Selectable from './Selectable';
 import Sortable from './Sortable';
 import TableBase from './TableBase';
