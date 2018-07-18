@@ -15,7 +15,6 @@ import kitchenSink from './kitchenSink';
 import largeDataSets from './largeDataSets';
 import primaryColumn from './primaryColumn';
 import selectable from './selectable';
-import rowSelectionAndColumnDef from './rowSelectionAndColumnDef';
 import rtl from './rtl';
 import scrollable from './scrollable';
 import sortable from './sortable';
@@ -41,7 +40,6 @@ export default [
   customCell,
   customHeaderCell,
   customRow,
-  rowSelectionAndColumnDef,
   columnAlignWithSort,
   largeDataSets,
   kitchenSink
