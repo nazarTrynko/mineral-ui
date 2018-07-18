@@ -94,10 +94,10 @@ const findCheckedCheckboxes = (table) => {
 };
 
 describe('Table', () => {
-  // testDemoExamples(examples, {
-  //   exclude: ['large-data-sets'],
-  //   contextPolyfill: true
-  // });
+  testDemoExamples(examples, {
+    exclude: ['kitchen-sink', 'large-data-sets'],
+    contextPolyfill: true
+  });
 
   it('renders', () => {
     const table = shallowTable();
