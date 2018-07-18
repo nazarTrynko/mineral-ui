@@ -71813,6 +71813,41 @@ Array [
 ]
 `;
 
+exports[`Table sortable maintains sort state when data changes 1`] = `
+Array [
+  Object {
+    "aa": "aa4",
+    "ab": "ab4",
+    "ac": "ac4",
+    "ad": "ad4",
+  },
+  Object {
+    "aa": "aa3",
+    "ab": "ab3",
+    "ac": "ac3",
+    "ad": "ad3",
+  },
+  Object {
+    "aa": "aa2",
+    "ab": "ab2",
+    "ac": "ac2",
+    "ad": "ad2",
+  },
+  Object {
+    "aa": "aa1",
+    "ab": "ab1",
+    "ac": "ac1",
+    "ad": "ad1",
+  },
+  Object {
+    "aa": "aa0",
+    "ab": "ab0",
+    "ac": "ac0",
+    "ad": "ad0",
+  },
+]
+`;
+
 exports[`Table sortable on click sorts ascending on first click 1`] = `
 Array [
   Object {

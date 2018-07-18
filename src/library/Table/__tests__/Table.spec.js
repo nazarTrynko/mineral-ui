@@ -23,8 +23,7 @@ const defaultProps = {
   title: 'Test'
 };
 // $FlowFixMe
-const nonDisabledRowsLength = defaultProps.data.filter((item) => !item.disabled)
-  .length;
+const nonDisabledRows = defaultProps.data.filter((item) => !item.disabled);
 
 function shallowTable(props = {}) {
   const tableProps = {
@@ -43,13 +42,23 @@ const mountTable = (props = {}) => {
   return mountInThemeProvider(<Table {...tableProps} />);
 };
 
+/* NOTE: The mountApp() function and App component are provided for such cases
+when one needs to call Enzyme functions, such as update(), setProps(),
+setState(), etc. on the ReactWrapper but those are not available on the
+ReactWrapper returned from mountTable() as it is not the root wrapper. */
+
 const mountApp = (props = {}) => {
-  return mount(<App {...props} />);
+  const appProps = {
+    ...defaultProps,
+    ...props
+  };
+
+  return mount(<App {...appProps} />);
 };
 
 class App extends Component<*, *> {
   state = {
-    data: this.props.data || []
+    data: this.props.data
   };
 
   render() {
@@ -65,6 +74,24 @@ class App extends Component<*, *> {
     );
   }
 }
+
+const findHeaderCheckbox = (table) => {
+  return table.find(TableHeader).find('input[type="checkbox"]');
+};
+
+const findCheckboxAtRowIndex = (table, index) => {
+  return table
+    .find(TableBody)
+    .find(TableRow)
+    .at(index)
+    .find('input[type="checkbox"]');
+};
+
+const findCheckedCheckboxes = (table) => {
+  return table
+    .find(TableBody)
+    .findWhere((n) => n.type() === Checkbox && n.props().checked);
+};
 
 describe('Table', () => {
   // testDemoExamples(examples, {
@@ -84,10 +111,9 @@ describe('Table', () => {
         const [, table] = mountTable({
           defaultSelectedRows: [defaultProps.data[0]]
         });
-
         const selectedRows = table.find(TableBase).props().selectable;
 
-        expect(selectedRows).toEqual(undefined);
+        expect(selectedRows).toBeUndefined();
       });
 
       it('selects default rows', () => {
@@ -96,34 +122,27 @@ describe('Table', () => {
           selectable: true
         });
 
-        const firstRowCheckbox = table
-          .find(TableBody)
-          .find(TableRow)
-          .at(0)
-          .find(Checkbox);
-        const headerCheckbox = table.find(TableHeader).find(Checkbox);
+        const firstRowCheckbox = findCheckboxAtRowIndex(table, 0);
+        const headerCheckbox = findHeaderCheckbox(table);
 
         expect(headerCheckbox.props().indeterminate).toBeTrue;
         expect(firstRowCheckbox.props().checked).toBeTrue;
       });
 
       it('does not select disabled rows', () => {
+        const disabledRow = defaultProps.data[3];
         const [, table] = mountTable({
-          defaultSelectedRows: [defaultProps.data[3]],
+          defaultSelectedRows: [disabledRow],
           selectable: true
         });
 
-        const lastRowCheckbox = table
-          .find(TableBody)
-          .find(TableRow)
-          .at(3)
-          .find(Checkbox);
-        const headerCheckbox = table.find(TableHeader).find(Checkbox);
+        const disabledRowCheckbox = findCheckboxAtRowIndex(table, 3);
+        const headerCheckbox = findHeaderCheckbox(table);
 
         expect(
           headerCheckbox.props().checked && headerCheckbox.props().indeterminate
         ).toBeFalse;
-        expect(lastRowCheckbox.props().checked).toBeFalse;
+        expect(disabledRowCheckbox.props().checked).toBeFalse;
       });
     });
 
@@ -131,28 +150,17 @@ describe('Table', () => {
       describe('single row', () => {
         it('selects row', () => {
           const app = mountApp({
-            ...defaultProps,
             selectable: true
           });
-
           let table = app.find(Table);
+          let firstRowCheckbox = findCheckboxAtRowIndex(table, 0);
 
-          let firstRowCheckbox = table
-            .find(TableBody)
-            .find(TableRow)
-            .at(0)
-            .find('input[type="checkbox"]');
           firstRowCheckbox.simulate('change');
-
           app.update();
-          table = app.find(Table);
 
-          const headerCheckbox = table.find(TableHeader).find(Checkbox);
-          firstRowCheckbox = table
-            .find(TableBody)
-            .find(TableRow)
-            .at(0)
-            .find(Checkbox);
+          table = app.find(Table);
+          const headerCheckbox = findHeaderCheckbox(table);
+          firstRowCheckbox = findCheckboxAtRowIndex(table, 0);
 
           expect(headerCheckbox.props().indeterminate).toBeTrue;
           expect(firstRowCheckbox.props().checked).toBeTrue;
@@ -160,29 +168,18 @@ describe('Table', () => {
 
         it('deselects row when initially selected', () => {
           const app = mountApp({
-            ...defaultProps,
             defaultSelectedRows: [defaultProps.data[0]],
             selectable: true
           });
-
           let table = app.find(Table);
+          let firstRowCheckbox = findCheckboxAtRowIndex(table, 0);
 
-          let firstRowCheckbox = table
-            .find(TableBody)
-            .find(TableRow)
-            .at(0)
-            .find('input[type="checkbox"]');
           firstRowCheckbox.simulate('change');
-
           app.update();
-          table = app.find(Table);
 
-          const headerCheckbox = table.find(TableHeader).find(Checkbox);
-          firstRowCheckbox = table
-            .find(TableBody)
-            .find(TableRow)
-            .at(0)
-            .find(Checkbox);
+          table = app.find(Table);
+          let headerCheckbox = findHeaderCheckbox(table);
+          firstRowCheckbox = findCheckboxAtRowIndex(table, 0);
 
           expect(
             headerCheckbox.props().checked &&
@@ -190,87 +187,92 @@ describe('Table', () => {
           ).toBeFalse;
           expect(firstRowCheckbox.props().checked).toBeFalse;
         });
+
+        it('calls onToggleRow callback when provided', () => {
+          const onToggleRow = jest.fn();
+          const [, table] = mountTable({
+            onToggleRow,
+            selectable: true
+          });
+          const firstRowCheckbox = findCheckboxAtRowIndex(table, 0);
+
+          firstRowCheckbox.simulate('change');
+
+          expect(onToggleRow).toHaveBeenCalledWith(defaultProps.data[0], true);
+        });
       });
 
       describe('all rows', () => {
         it('selects all non-disabled rows when no rows initially selected', () => {
           const app = mountApp({
-            ...defaultProps,
             selectable: true
           });
-
           let table = app.find(Table);
+          const headerCheckbox = findHeaderCheckbox(table);
 
-          const headerCheckbox = table
-            .find(TableHeader)
-            .find('input[type="checkbox"]');
           headerCheckbox.simulate('change');
-
           app.update();
-          table = app.find(Table);
 
-          const checkboxes = table
-            .find(TableBody)
-            .findWhere((n) => n.type() === Checkbox && n.props().checked);
+          table = app.find(Table);
+          const checkedCheckboxes = findCheckedCheckboxes(table);
 
           expect(headerCheckbox.props().checked).toBeTrue;
-          expect(checkboxes.length).toEqual(nonDisabledRowsLength);
+          expect(checkedCheckboxes.length).toEqual(nonDisabledRows.length);
         });
 
         it('deselects all rows when some rows initially selected', () => {
           const app = mountApp({
-            ...defaultProps,
             defaultSelectedRows: [defaultProps.data[0]],
             selectable: true
           });
-
           let table = app.find(Table);
+          const headerCheckbox = findHeaderCheckbox(table);
 
-          const headerCheckbox = table
-            .find(TableHeader)
-            .find('input[type="checkbox"]');
           headerCheckbox.simulate('change');
-
           app.update();
-          table = app.find(Table);
 
-          const checkboxes = table
-            .find(TableBody)
-            .findWhere((n) => n.type() === Checkbox && n.props().checked);
+          table = app.find(Table);
+          const checkedCheckboxes = findCheckedCheckboxes(table);
 
           expect(
             headerCheckbox.props().checked &&
               headerCheckbox.props().indeterminate
           ).toBeFalse;
-          expect(checkboxes.length).toEqual(0);
+          expect(checkedCheckboxes.length).toEqual(0);
         });
 
         it('deselects all rows when all rows initially selected', () => {
           const app = mountApp({
-            ...defaultProps,
             defaultSelectedRows: defaultProps.data,
             selectable: true
           });
-
           let table = app.find(Table);
+          const headerCheckbox = findHeaderCheckbox(table);
 
-          const headerCheckbox = table
-            .find(TableHeader)
-            .find('input[type="checkbox"]');
           headerCheckbox.simulate('change');
-
           app.update();
-          table = app.find(Table);
 
-          const checkboxes = table
-            .find(TableBody)
-            .findWhere((n) => n.type() === Checkbox && n.props().checked);
+          table = app.find(Table);
+          const checkedCheckboxes = findCheckedCheckboxes(table);
 
           expect(
             headerCheckbox.props().checked &&
               headerCheckbox.props().indeterminate
           ).toBeFalse;
-          expect(checkboxes.length).toEqual(0);
+          expect(checkedCheckboxes.length).toEqual(0);
+        });
+
+        it('calls onToggleAllRows callback when provided', () => {
+          const onToggleAllRows = jest.fn();
+          const [, table] = mountTable({
+            onToggleAllRows,
+            selectable: true
+          });
+          const headerCheckbox = findHeaderCheckbox(table);
+
+          headerCheckbox.simulate('change');
+
+          expect(onToggleAllRows).toHaveBeenCalledWith(nonDisabledRows, true);
         });
       });
     });
@@ -280,7 +282,6 @@ describe('Table', () => {
     describe('enablement', () => {
       it('makes all columns sortable with sortable on Table', () => {
         const [, table] = mountTable({
-          data: defaultProps.data,
           sortable: true
         });
         const header = table.find(TableHeader);
@@ -295,8 +296,7 @@ describe('Table', () => {
             { key: 'ab', content: 'AB' },
             { key: 'ac', content: 'AC' },
             { key: 'ad', content: 'AD' }
-          ],
-          data: defaultProps.data
+          ]
         });
         const header = table.find(TableHeader);
 
@@ -311,7 +311,6 @@ describe('Table', () => {
             { key: 'ac', content: 'AC' },
             { key: 'ad', content: 'AD' }
           ],
-          data: defaultProps.data,
           sortable: true
         });
         const header = table.find(TableHeader);
@@ -325,7 +324,6 @@ describe('Table', () => {
         const [, table] = mountTable({
           defaultSort: { key: 'aa', descending: true }
         });
-
         const sortedData = table.find(TableBase).props().data;
 
         expect(sortedData).toMatchSnapshot();
@@ -333,11 +331,9 @@ describe('Table', () => {
 
       it('sorts with sortable Table', () => {
         const [, table] = mountTable({
-          data: defaultProps.data,
           defaultSort: { key: 'aa', descending: true },
           sortable: true
         });
-
         const sortedData = table.find(TableBase).props().data;
 
         expect(sortedData).toMatchSnapshot();
@@ -351,10 +347,8 @@ describe('Table', () => {
             { key: 'ac', content: 'AC' },
             { key: 'ad', content: 'AD' }
           ],
-          data: defaultProps.data,
           defaultSort: { key: 'aa', descending: true }
         });
-
         const sortedData = table.find(TableBase).props().data;
 
         expect(sortedData).toMatchSnapshot();
@@ -362,12 +356,10 @@ describe('Table', () => {
 
       it('sorts with sortable Table and sortComparator', () => {
         const [, table] = mountTable({
-          data: defaultProps.data,
           defaultSort: { key: 'aa', descending: true },
           sortable: true,
           sortComparator: () => 0
         });
-
         const sortedData = table.find(TableBase).props().data;
 
         expect(sortedData).toMatchSnapshot();
@@ -388,11 +380,9 @@ describe('Table', () => {
             { key: 'ac', content: 'AC' },
             { key: 'ad', content: 'AD' }
           ],
-          data: defaultProps.data,
           defaultSort: { key: 'aa', descending: true },
           sortComparator: tableSortComparator
         });
-
         const sortedData = table.find(TableBase).props().data;
 
         expect(sortedData).toMatchSnapshot();
@@ -402,19 +392,16 @@ describe('Table', () => {
 
     describe('on click', () => {
       let app, table;
+      const onSort = jest.fn();
 
       beforeEach(() => {
-        // [, table] = mountTable({
-        //   data: defaultProps.data,
-        //   sortable: true
-        // });
-
         app = mountApp({
-          ...defaultProps,
+          onSort,
           sortable: true
         });
 
         table = app.find(Table);
+        onSort.mockReset();
       });
 
       it('sorts ascending on first click', () => {
@@ -425,7 +412,6 @@ describe('Table', () => {
 
         app.update();
         table = app.find(Table);
-
         const sortedData = table.find(TableBase).props().data;
 
         expect(sortedData).toMatchSnapshot();
@@ -441,7 +427,6 @@ describe('Table', () => {
 
         app.update();
         table = app.find(Table);
-
         const sortedData = table.find(TableBase).props().data;
 
         expect(sortedData).toMatchSnapshot();
@@ -459,12 +444,22 @@ describe('Table', () => {
 
         app.update();
         table = app.find(Table);
-
         const sortedData = table.find(TableBase).props().data;
 
         expect(sortedData).toMatchSnapshot();
         expect(headerCell.html()).toMatchSnapshot('Idle');
         expect(secondHeaderCell.html()).toMatchSnapshot('Active');
+      });
+
+      it('calls onSort callback when provided', () => {
+        const button = table
+          .find(TableSortableHeaderCell)
+          .first()
+          .find('button');
+
+        button.simulate('click');
+
+        expect(onSort).toHaveBeenCalledWith({ key: 'aa', descending: false });
       });
     });
 
@@ -483,8 +478,7 @@ describe('Table', () => {
           { aa: 'aa3', ab: 'ab3', ac: 'ac3', ad: 'ad3' }
         ],
         defaultSort: { key: 'aa', descending: true },
-        sortable: true,
-        title: 'Test'
+        sortable: true
       };
 
       const app = mountApp(props);
@@ -493,7 +487,9 @@ describe('Table', () => {
         data: [...props.data, { aa: 'aa4', ab: 'ab4', ac: 'ac4', ad: 'ad4' }]
       });
 
-      expect(app.exists()).toEqual(true);
+      const sortedData = app.find(TableBase).props().data;
+
+      expect(sortedData).toMatchSnapshot();
     });
   });
 });

@@ -87,21 +87,22 @@ export default class Selectable extends Component<Props, State> {
 
   toggleAll = () => {
     if (this.isControlled('selected')) {
-      this.toggleAllActions();
+      this.toggleAllActions(!this.allSelected());
     } else {
       this.setState(
         {
           selected:
             this.allSelected() || this.someSelected() ? [] : this.props.data
         },
-        this.toggleAllActions
+        () => {
+          this.toggleAllActions(this.allSelected());
+        }
       );
     }
   };
 
-  toggleAllActions = () => {
+  toggleAllActions = (all: boolean) => {
     const { data, onToggleAll } = this.props;
-    const all = !this.allSelected();
     onToggleAll && onToggleAll(all ? data : [], all);
   };
 
