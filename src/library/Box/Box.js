@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
+import memoizeOne from 'memoize-one';
 import { createStyledComponent, getResponsiveStyles } from '../styles';
 
 type Props = {
@@ -546,18 +547,6 @@ const styles = {
   }
 };
 
-// Box's root node must be created outside of render, so that the entire DOM
-// element is replaced only when the element prop is changed, otherwise it is
-// updated in place
-function createRootNode(props: Props) {
-  const { element = Box.defaultProps.element } = props;
-
-  return createStyledComponent(element, styles.root, {
-    includeStyleReset: true,
-    rootEl: element
-  });
-}
-
 /**
  * Box component provides an easy way to apply standardized size & space to your
  * layout.
@@ -571,16 +560,25 @@ export default class Box extends Component<Props> {
     element: 'div'
   };
 
-  componentWillUpdate(nextProps: Props) {
-    if (this.props.element !== nextProps.element) {
-      this.rootNode = createRootNode(nextProps);
-    }
-  }
+  static createRootNode = (props: Props) => {
+    const { element = Box.defaultProps.element } = props;
 
-  rootNode: React$ComponentType<*> = createRootNode(this.props);
+    return createStyledComponent(element, styles.root, {
+      includeStyleReset: true,
+      rootEl: element
+    });
+  };
+
+  // Must be an instance method to prevent multiple component instances from
+  // resetting each other’s memoized keys
+  getRootNode = memoizeOne(
+    Box.createRootNode,
+    (newProps: Props, prevProps: Props) =>
+      newProps.element === prevProps.element
+  );
 
   render() {
-    const Root = this.rootNode;
+    const Root = this.getRootNode(this.props);
 
     return <Root {...this.props} />;
   }
