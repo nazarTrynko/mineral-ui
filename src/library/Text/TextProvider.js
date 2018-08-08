@@ -1,7 +1,8 @@
 /* @flow */
 import React, { Component } from 'react';
+import memoizeOne from 'memoize-one';
 import { string } from 'prop-types';
-import { createRootNode } from './Text';
+import Text from './Text';
 
 type Props = {
   /** Available horizontal alignments */
@@ -46,16 +47,16 @@ export default class TextProvider extends Component<Props> {
     };
   }
 
-  componentWillUpdate(nextProps: Props) {
-    if (this.props.element !== nextProps.element) {
-      this.rootNode = createRootNode(nextProps);
-    }
-  }
-
-  rootNode: React$ComponentType<*> = createRootNode(this.props);
+  // Must be an instance method to prevent multiple component instances from
+  // resetting each other’s memoized keys
+  getRootNode = memoizeOne(
+    Text.createRootNode,
+    (newProps: Props, prevProps: Props) =>
+      newProps.element === prevProps.element
+  );
 
   render() {
-    const Root = this.rootNode;
+    const Root = this.getRootNode(this.props);
     const { parentElement: ignoreParentElement, ...restProps } = this.props;
     const rootProps = {
       ...restProps
