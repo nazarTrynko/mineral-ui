@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component, cloneElement } from 'react';
+import memoizeOne from 'memoize-one';
 import { ellipsis } from 'polished';
 import { createStyledComponent, pxToEm, getNormalizedValue } from '../styles';
 
@@ -323,13 +324,13 @@ export default class Button extends Component<Props> {
     type: 'button'
   };
 
-  componentWillUpdate(nextProps: Props) {
-    if (this.props.element !== nextProps.element) {
-      this.rootNode = createRootNode(nextProps);
-    }
-  }
-
-  rootNode: React$ComponentType<*> = createRootNode(this.props);
+  // Must be an instance method to prevent multiple component instances from
+  // resetting each other’s memoized keys
+  getRootNode = memoizeOne(
+    createRootNode,
+    (newProps: Props, prevProps: Props) =>
+      newProps.element === prevProps.element
+  );
 
   render() {
     const {
@@ -350,7 +351,7 @@ export default class Button extends Component<Props> {
       ...restProps
     };
 
-    const Root = this.rootNode;
+    const Root = this.getRootNode(this.props);
 
     const startIcon = iconStart
       ? cloneElement(iconStart, { size: iconSize[size], key: 'iconStart' })

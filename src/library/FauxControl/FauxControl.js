@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component, cloneElement } from 'react';
+import memoizeOne from 'memoize-one';
 import { ellipsis } from 'polished';
 import { createStyledComponent, getNormalizedValue, pxToEm } from '../styles';
 import IconDanger from '../Icon/IconDanger';
@@ -344,13 +345,13 @@ const createControlNode = (props: Props) => {
  * FauxControl
  */
 export default class FauxControl extends Component<Props> {
-  componentWillUpdate(nextProps: Props) {
-    if (this.props.control !== nextProps.control) {
-      this.controlNode = createControlNode(nextProps);
-    }
-  }
-
-  controlNode: React$ComponentType<*> = createControlNode(this.props);
+  // Must be an instance method to prevent multiple component instances from
+  // resetting each other’s memoized keys
+  getControlNode = memoizeOne(
+    createControlNode,
+    (newProps: Props, prevProps: Props) =>
+      newProps.control === prevProps.control
+  );
 
   render() {
     const {
@@ -422,7 +423,7 @@ export default class FauxControl extends Component<Props> {
       variant
     };
 
-    const Control = this.controlNode;
+    const Control = this.getControlNode(this.props);
 
     const underlayProps = { disabled, readOnly, variant };
 
