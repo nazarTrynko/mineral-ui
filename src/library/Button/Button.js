@@ -298,20 +298,6 @@ function filterProps({ element, type }: Props) {
   return invalidComponentProps.concat(invalidLinkProps);
 }
 
-// Button's root node must be created outside of render, so that the entire DOM
-// element is replaced only when the element prop is changed, otherwise it is
-// updated in place
-function createRootNode(props: Props) {
-  const { element = Button.defaultProps.element } = props;
-
-  return createStyledComponent(element, styles.button, {
-    displayName: 'Button',
-    filterProps: filterProps(props),
-    includeStyleReset: true,
-    rootEl: element
-  });
-}
-
 /**
  * The Button component represents a clickable button.
  * Buttons draw attention to actions that can be performed in your app.
@@ -324,10 +310,21 @@ export default class Button extends Component<Props> {
     type: 'button'
   };
 
+  static createRootNode = (props: Props) => {
+    const { element = Button.defaultProps.element } = props;
+
+    return createStyledComponent(element, styles.button, {
+      displayName: 'Button',
+      filterProps: filterProps(props),
+      includeStyleReset: true,
+      rootEl: element
+    });
+  };
+
   // Must be an instance method to prevent multiple component instances from
   // resetting each other’s memoized keys
   getRootNode = memoizeOne(
-    createRootNode,
+    Button.createRootNode,
     (newProps: Props, prevProps: Props) =>
       newProps.element === prevProps.element
   );

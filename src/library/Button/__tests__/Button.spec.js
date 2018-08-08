@@ -1,8 +1,9 @@
 /* @flow */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { mountInThemeProvider } from '../../../../utils/enzymeUtils';
 import Button from '../Button';
+import { ThemeProvider } from '../../themes';
 import examples from '../../../website/app/demos/Button/examples';
 import testDemoExamples from '../../../../utils/testDemoExamples';
 import testThemeOverrides from '../../../../utils/testThemeOverrides';
@@ -28,6 +29,18 @@ const mountButton = (props = {}) => {
   };
 
   return mountInThemeProvider(<Button {...buttonProps} />);
+};
+
+const mountApp = (props = {}) => {
+  return mount(<App {...props} />);
+};
+
+const App = (props = {}) => {
+  return (
+    <ThemeProvider>
+      <Button {...props} />
+    </ThemeProvider>
+  );
 };
 
 describe('Button', () => {
@@ -105,6 +118,35 @@ describe('Button', () => {
           expect(link).toMatchSnapshot();
         });
       });
+    });
+  });
+
+  describe('root node', () => {
+    beforeEach(() => {
+      Button.createRootNode = jest
+        .fn()
+        .mockImplementation((props) => props.element);
+    });
+
+    afterEach(() => {
+      Button.createRootNode.mockReset();
+    });
+
+    it('is updated when element prop changes', () => {
+      const app = mountApp();
+
+      app.setProps({ element: 'a' });
+
+      expect(Button.createRootNode).toHaveBeenCalledTimes(2);
+    });
+
+    it('is not updated when other props change', () => {
+      const app = mountApp();
+
+      app.setProps({ id: 'test' });
+      app.setProps({ onClick: jest.fn() });
+
+      expect(Button.createRootNode).toHaveBeenCalledTimes(1);
     });
   });
 });

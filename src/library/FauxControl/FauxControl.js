@@ -333,22 +333,20 @@ function getIcons({
   return [startIcon, endIcon];
 }
 
-// The control node must be created outside of render, so that the entire DOM
-// element is replaced only when the control prop is changed.
-const createControlNode = (props: Props) => {
-  return createStyledComponent(props.control, styles.control, {
-    displayName: 'Control'
-  });
-};
-
 /**
  * FauxControl
  */
 export default class FauxControl extends Component<Props> {
+  static createControlNode = (props: Props) => {
+    return createStyledComponent(props.control, styles.control, {
+      displayName: 'Control'
+    });
+  };
+
   // Must be an instance method to prevent multiple component instances from
   // resetting each other’s memoized keys
   getControlNode = memoizeOne(
-    createControlNode,
+    FauxControl.createControlNode,
     (newProps: Props, prevProps: Props) =>
       newProps.control === prevProps.control
   );

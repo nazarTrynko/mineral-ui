@@ -60,18 +60,6 @@ const styles = ({ variant, theme: baseTheme }) => {
   };
 };
 
-// The root node must be created outside of render, so that the entire DOM
-// element is replaced only when the element prop is changed.
-function createRootNode(props: Props) {
-  const { element = Link.defaultProps.element } = props;
-
-  return createStyledComponent(element, styles, {
-    displayName: 'Link',
-    filterProps: ['element', 'variant'],
-    rootEl: element
-  });
-}
-
 /**
  * The Link component creates a hyperlink to external pages, files, anchors on the same page, or another URL.
  */
@@ -80,10 +68,20 @@ export default class Link extends Component<Props> {
     element: 'a'
   };
 
+  static createRootNode = (props: Props) => {
+    const { element = Link.defaultProps.element } = props;
+
+    return createStyledComponent(element, styles, {
+      displayName: 'Link',
+      filterProps: ['element', 'variant'],
+      rootEl: element
+    });
+  };
+
   // Must be an instance method to prevent multiple component instances from
   // resetting each other’s memoized keys
   getRootNode = memoizeOne(
-    createRootNode,
+    Link.createRootNode,
     (newProps: Props, prevProps: Props) =>
       newProps.element === prevProps.element
   );
