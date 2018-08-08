@@ -1,9 +1,11 @@
 /* @flow */
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { mountInThemeProvider } from '../../../../utils/enzymeUtils';
+import { shallow } from 'enzyme';
+import {
+  mountInThemeProvider,
+  mountInWrapper
+} from '../../../../utils/enzymeUtils';
 import Button from '../Button';
-import { ThemeProvider } from '../../themes';
 import examples from '../../../website/app/demos/Button/examples';
 import testDemoExamples from '../../../../utils/testDemoExamples';
 import testThemeOverrides from '../../../../utils/testThemeOverrides';
@@ -29,18 +31,6 @@ const mountButton = (props = {}) => {
   };
 
   return mountInThemeProvider(<Button {...buttonProps} />);
-};
-
-const mountApp = (props = {}) => {
-  return mount(<App {...props} />);
-};
-
-const App = (props = {}) => {
-  return (
-    <ThemeProvider>
-      <Button {...props} />
-    </ThemeProvider>
-  );
 };
 
 describe('Button', () => {
@@ -122,10 +112,13 @@ describe('Button', () => {
   });
 
   describe('root node', () => {
+    let wrapper;
+
     beforeEach(() => {
       Button.createRootNode = jest
         .fn()
         .mockImplementation((props) => props.element);
+      wrapper = mountInWrapper(<Button>test</Button>);
     });
 
     afterEach(() => {
@@ -133,18 +126,14 @@ describe('Button', () => {
     });
 
     it('is updated when element prop changes', () => {
-      const app = mountApp();
-
-      app.setProps({ element: 'a' });
+      wrapper.setProps({ element: 'a' });
 
       expect(Button.createRootNode).toHaveBeenCalledTimes(2);
     });
 
     it('is not updated when other props change', () => {
-      const app = mountApp();
-
-      app.setProps({ id: 'test' });
-      app.setProps({ onClick: jest.fn() });
+      wrapper.setProps({ id: 'test' });
+      wrapper.setProps({ onClick: jest.fn() });
 
       expect(Button.createRootNode).toHaveBeenCalledTimes(1);
     });
