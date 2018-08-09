@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
+import memoizeOne from 'memoize-one';
 import { createStyledComponent } from '../../library/styles';
 
 type Props = {
@@ -99,16 +100,6 @@ const styles = {
 
 const Inner = createStyledComponent('div', styles.inner);
 
-// Root node must be created outside of render, so that the entire DOM element
-// is replaced only when the element prop is changed, otherwise it is updated in place
-function createRootNode(props: Props) {
-  const { element = Section.defaultProps.element } = props;
-
-  return createStyledComponent(element, styles.root, {
-    rootEl: element
-  });
-}
-
 export default class Section extends Component<Props> {
   static defaultProps = {
     angles: [5, 5],
@@ -116,13 +107,21 @@ export default class Section extends Component<Props> {
     element: 'section'
   };
 
-  componentWillUpdate(nextProps: Props) {
-    if (this.props.element !== nextProps.element) {
-      this.rootNode = createRootNode(nextProps);
-    }
-  }
+  static createRootNode = (props: Props) => {
+    const { element = Section.defaultProps.element } = props;
 
-  rootNode: React$ComponentType<*> = createRootNode(this.props);
+    return createStyledComponent(element, styles.root, {
+      rootEl: element
+    });
+  };
+
+  // Must be an instance method to prevent multiple component instances from
+  // resetting each other’s memoized keys
+  getRootNode = memoizeOne(
+    Section.createRootNode,
+    (newProps: Props, prevProps: Props) =>
+      newProps.element === prevProps.element
+  );
 
   render() {
     const {
@@ -133,7 +132,7 @@ export default class Section extends Component<Props> {
       ...restProps
     } = this.props;
 
-    const Root = this.rootNode;
+    const Root = this.getRootNode(this.props);
 
     const rootProps = {
       point,
