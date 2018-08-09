@@ -19,31 +19,34 @@ describe('Box', () => {
     expect(box.exists()).toEqual(true);
   });
 
-  describe('root node', () => {
-    let wrapper;
+  describe('memoization', () => {
+    describe('createRootNode', () => {
+      let wrapper;
 
-    beforeEach(() => {
-      Box.createRootNode = jest
-        .fn()
-        .mockImplementation((props) => props.element);
-      wrapper = mountInWrapper(<Box />);
-    });
+      beforeEach(() => {
+        Box.createRootNode = jest
+          .fn()
+          .mockImplementation((props) => props.element);
+        wrapper = mountInWrapper(<Box />);
+      });
 
-    afterEach(() => {
-      Box.createRootNode.mockRestore();
-    });
+      afterEach(() => {
+        // $FlowFixMe
+        Box.createRootNode.mockRestore();
+      });
 
-    it('is updated when element prop changes', () => {
-      wrapper.setProps({ element: 'span' });
+      it('is updated when element prop changes', () => {
+        wrapper.setProps({ element: 'span' });
 
-      expect(Box.createRootNode).toHaveBeenCalledTimes(2);
-    });
+        expect(Box.createRootNode).toHaveBeenCalledTimes(2);
+      });
 
-    it('is not updated when other props change', () => {
-      wrapper.setProps({ id: 'test' });
-      wrapper.setProps({ onClick: jest.fn() });
+      it('is not updated when other props change', () => {
+        wrapper.setProps({ id: 'test' });
+        wrapper.setProps({ onClick: jest.fn() });
 
-      expect(Box.createRootNode).toHaveBeenCalledTimes(1);
+        expect(Box.createRootNode).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

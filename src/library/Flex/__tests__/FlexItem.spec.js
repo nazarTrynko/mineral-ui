@@ -35,30 +35,33 @@ describe('FlexItem', () => {
     });
   });
 
-  describe('root node', () => {
-    let wrapper;
+  describe('memoization', () => {
+    describe('createRootNode', () => {
+      let wrapper;
 
-    beforeEach(() => {
-      FlexItem.createRootNode = jest.fn().mockImplementation(() => 'div');
-      wrapper = mountInWrapper(<FlexItem />);
-    });
+      beforeEach(() => {
+        FlexItem.createRootNode = jest.fn().mockImplementation(() => 'div');
+        wrapper = mountInWrapper(<FlexItem />);
+      });
 
-    afterEach(() => {
-      FlexItem.createRootNode.mockReset();
-    });
+      afterEach(() => {
+        // $FlowFixMe
+        FlexItem.createRootNode.mockReset();
+      });
 
-    it('is updated when flex prop changes', () => {
-      // FIXME: This causes a console warning due to invalid dom attribute
-      wrapper.setProps({ flex: true });
+      it('is updated when flex prop changes', () => {
+        // FIXME: This causes a console warning due to invalid dom attribute
+        wrapper.setProps({ flex: true });
 
-      expect(FlexItem.createRootNode).toHaveBeenCalledTimes(2);
-    });
+        expect(FlexItem.createRootNode).toHaveBeenCalledTimes(2);
+      });
 
-    it('is not updated when other props change', () => {
-      wrapper.setProps({ id: 'test' });
-      wrapper.setProps({ onClick: jest.fn() });
+      it('is not updated when other props change', () => {
+        wrapper.setProps({ id: 'test' });
+        wrapper.setProps({ onClick: jest.fn() });
 
-      expect(FlexItem.createRootNode).toHaveBeenCalledTimes(1);
+        expect(FlexItem.createRootNode).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

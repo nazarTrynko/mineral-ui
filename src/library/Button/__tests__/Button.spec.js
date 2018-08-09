@@ -111,31 +111,34 @@ describe('Button', () => {
     });
   });
 
-  describe('root node', () => {
-    let wrapper;
+  describe('memoization', () => {
+    describe('createRootNode', () => {
+      let wrapper;
 
-    beforeEach(() => {
-      Button.createRootNode = jest
-        .fn()
-        .mockImplementation((props) => props.element);
-      wrapper = mountInWrapper(<Button>test</Button>);
-    });
+      beforeEach(() => {
+        Button.createRootNode = jest
+          .fn()
+          .mockImplementation((props) => props.element);
+        wrapper = mountInWrapper(<Button>test</Button>);
+      });
 
-    afterEach(() => {
-      Button.createRootNode.mockRestore();
-    });
+      afterEach(() => {
+        // $FlowFixMe
+        Button.createRootNode.mockRestore();
+      });
 
-    it('is updated when element prop changes', () => {
-      wrapper.setProps({ element: 'a' });
+      it('is updated when element prop changes', () => {
+        wrapper.setProps({ element: 'a' });
 
-      expect(Button.createRootNode).toHaveBeenCalledTimes(2);
-    });
+        expect(Button.createRootNode).toHaveBeenCalledTimes(2);
+      });
 
-    it('is not updated when other props change', () => {
-      wrapper.setProps({ id: 'test' });
-      wrapper.setProps({ onClick: jest.fn() });
+      it('is not updated when other props change', () => {
+        wrapper.setProps({ id: 'test' });
+        wrapper.setProps({ onClick: jest.fn() });
 
-      expect(Button.createRootNode).toHaveBeenCalledTimes(1);
+        expect(Button.createRootNode).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

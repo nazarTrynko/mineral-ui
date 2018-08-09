@@ -5,9 +5,12 @@ import { mount } from 'enzyme';
 import type { ReactWrapper } from 'enzyme';
 import ThemeProvider from '../src/library/themes/ThemeProvider';
 
-export const mountInWrapper = (cmp, props = {}) => {
+export const mountInWrapper = (
+  component: React$Element<*>,
+  props: Object = {}
+) => {
   const Wrapper = (props = {}) => (
-    <ThemeProvider>{cloneElement(cmp, props)}</ThemeProvider>
+    <ThemeProvider>{cloneElement(component, props)}</ThemeProvider>
   );
 
   return mount(<Wrapper {...props} />);

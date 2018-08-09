@@ -29,31 +29,34 @@ describe('Text', () => {
     ]);
   });
 
-  describe('root node', () => {
-    let wrapper;
+  describe('memoization', () => {
+    describe('createRootNode', () => {
+      let wrapper;
 
-    beforeEach(() => {
-      Text.createRootNode = jest
-        .fn()
-        .mockImplementation((props) => props.element);
-      wrapper = mountInWrapper(<Text>test</Text>);
-    });
+      beforeEach(() => {
+        Text.createRootNode = jest
+          .fn()
+          .mockImplementation((props) => props.element);
+        wrapper = mountInWrapper(<Text>test</Text>);
+      });
 
-    afterEach(() => {
-      Text.createRootNode.mockRestore();
-    });
+      afterEach(() => {
+        // $FlowFixMe
+        Text.createRootNode.mockRestore();
+      });
 
-    it('is updated when element prop changes', () => {
-      wrapper.setProps({ element: 'a' });
+      it('is updated when element prop changes', () => {
+        wrapper.setProps({ element: 'a' });
 
-      expect(Text.createRootNode).toHaveBeenCalledTimes(2);
-    });
+        expect(Text.createRootNode).toHaveBeenCalledTimes(2);
+      });
 
-    it('is not updated when other props change', () => {
-      wrapper.setProps({ id: 'test' });
-      wrapper.setProps({ onClick: jest.fn() });
+      it('is not updated when other props change', () => {
+        wrapper.setProps({ id: 'test' });
+        wrapper.setProps({ onClick: jest.fn() });
 
-      expect(Text.createRootNode).toHaveBeenCalledTimes(1);
+        expect(Text.createRootNode).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

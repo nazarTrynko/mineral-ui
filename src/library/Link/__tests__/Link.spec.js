@@ -33,31 +33,34 @@ describe('Link', () => {
     );
   });
 
-  describe('root node', () => {
-    let wrapper;
+  describe('memoization', () => {
+    describe('createRootNode', () => {
+      let wrapper;
 
-    beforeEach(() => {
-      Link.createRootNode = jest
-        .fn()
-        .mockImplementation((props) => props.element);
-      wrapper = mountInWrapper(<Link href="http://example.com">test</Link>);
-    });
+      beforeEach(() => {
+        Link.createRootNode = jest
+          .fn()
+          .mockImplementation((props) => props.element);
+        wrapper = mountInWrapper(<Link href="http://example.com">test</Link>);
+      });
 
-    afterEach(() => {
-      Link.createRootNode.mockRestore();
-    });
+      afterEach(() => {
+        // $FlowFixMe
+        Link.createRootNode.mockRestore();
+      });
 
-    it('is updated when element prop changes', () => {
-      wrapper.setProps({ element: 'span' });
+      it('is updated when element prop changes', () => {
+        wrapper.setProps({ element: 'span' });
 
-      expect(Link.createRootNode).toHaveBeenCalledTimes(2);
-    });
+        expect(Link.createRootNode).toHaveBeenCalledTimes(2);
+      });
 
-    it('is not updated when other props change', () => {
-      wrapper.setProps({ id: 'test' });
-      wrapper.setProps({ onClick: jest.fn() });
+      it('is not updated when other props change', () => {
+        wrapper.setProps({ id: 'test' });
+        wrapper.setProps({ onClick: jest.fn() });
 
-      expect(Link.createRootNode).toHaveBeenCalledTimes(1);
+        expect(Link.createRootNode).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });
