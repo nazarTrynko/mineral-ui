@@ -1,5 +1,6 @@
 /* @flow */
 import React, { PureComponent } from 'react';
+import memoizeOne from 'memoize-one';
 import { createStyledComponent, getNormalizedValue, pxToEm } from '../styles';
 import { createThemedComponent, mapComponentThemes } from '../themes';
 import TableCell, {
@@ -116,21 +117,6 @@ const styles = ({
   };
 };
 
-// TableHeaderCell's root node must be created outside of render, so that the entire DOM
-// element is replaced only when the element prop is changed, otherwise it is
-// updated in place
-function createRootNode(props: Props) {
-  const { element = TableHeaderCell.defaultProps.element } = props;
-
-  return createStyledComponent(ThemedTableCell, styles, {
-    displayName: 'TableHeaderCell',
-    filterProps: ['width'],
-    forwardProps: ['element', 'noPadding', 'textAlign'],
-    rootEl: element,
-    withProps: { element }
-  });
-}
-
 /**
  * TableHeaderCell
  */
@@ -140,18 +126,29 @@ export default class TableHeaderCell extends PureComponent<Props> {
     textAlign: 'start'
   };
 
-  componentWillUpdate(nextProps: Props) {
-    if (this.props.element !== nextProps.element) {
-      this.rootNode = createRootNode(nextProps);
-    }
+  static createRootNode(props: Props) {
+    const { element = TableHeaderCell.defaultProps.element } = props;
+
+    return createStyledComponent(ThemedTableCell, styles, {
+      displayName: 'TableHeaderCell',
+      filterProps: ['width'],
+      forwardProps: ['element', 'noPadding', 'textAlign'],
+      rootEl: element,
+      withProps: { element }
+    });
   }
 
-  rootNode: React$ComponentType<*> = createRootNode(this.props);
+  // Must be an instance method to prevent multiple component instances from
+  // resetting each other’s memoized keys
+  getRootNode = memoizeOne(
+    TableHeaderCell.createRootNode,
+    (newProps: Props, prevProps: Props) =>
+      newProps.element === prevProps.element
+  );
 
   render() {
     const { children, label, ...restProps } = this.props;
-
-    const Root = this.rootNode;
+    const Root = this.getRootNode(this.props);
 
     return (
       <TableContext.Consumer>

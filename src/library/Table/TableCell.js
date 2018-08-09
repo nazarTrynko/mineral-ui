@@ -1,5 +1,6 @@
 /* @flow */
 import React, { PureComponent } from 'react';
+import memoizeOne from 'memoize-one';
 import { createStyledComponent, getNormalizedValue, pxToEm } from '../styles';
 import { rtlTextAlign } from '../utils';
 import { TableContext } from './TableBase';
@@ -67,22 +68,6 @@ const styles = ({
   };
 };
 
-// TableCell's root node must be created outside of render, so that the entire DOM
-// element is replaced only when the element prop is changed, otherwise it is
-// updated in place
-function createRootNode(props: Props) {
-  const defaultElement = TableCell.defaultProps.element;
-  const element =
-    props.element && props.element !== defaultElement
-      ? props.element
-      : props.primary ? 'th' : defaultElement;
-
-  return createStyledComponent(element, styles, {
-    displayName: 'TableCell',
-    rootEl: element
-  });
-}
-
 /**
  * TableCell
  */
@@ -91,21 +76,31 @@ export default class TableCell extends PureComponent<Props> {
     element: 'td'
   };
 
-  componentWillUpdate(nextProps: Props) {
-    if (
-      this.props.element !== nextProps.element ||
-      this.props.primary !== nextProps.primary
-    ) {
-      this.rootNode = createRootNode(nextProps);
-    }
-  }
+  static createRootNode = (props: Props) => {
+    const defaultElement = TableCell.defaultProps.element;
+    const element =
+      props.element && props.element !== defaultElement
+        ? props.element
+        : props.primary ? 'th' : defaultElement;
 
-  rootNode: React$ComponentType<*> = createRootNode(this.props);
+    return createStyledComponent(element, styles, {
+      displayName: 'TableCell',
+      rootEl: element
+    });
+  };
+
+  // Must be an instance method to prevent multiple component instances from
+  // resetting each other’s memoized keys
+  getRootNode = memoizeOne(
+    TableCell.createRootNode,
+    (newProps: Props, prevProps: Props) =>
+      newProps.element === prevProps.element &&
+      newProps.primary === prevProps.primary
+  );
 
   render() {
     const { children, primary, ...restProps } = this.props;
-
-    const Root = this.rootNode;
+    const Root = this.getRootNode(this.props);
 
     return (
       <TableContext.Consumer>
