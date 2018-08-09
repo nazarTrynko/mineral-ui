@@ -120,24 +120,26 @@ describe('Button', () => {
           .fn()
           .mockImplementation((props) => props.element);
         wrapper = mountInWrapper(<Button>test</Button>);
+        // $FlowFixMe - Flow doesn't know it is a mock
+        Button.createRootNode.mockClear(); // Ignore initial call
       });
 
       afterEach(() => {
-        // $FlowFixMe
+        // $FlowFixMe - Flow doesn't know it is a mock
         Button.createRootNode.mockRestore();
       });
 
       it('is updated when element prop changes', () => {
         wrapper.setProps({ element: 'a' });
 
-        expect(Button.createRootNode).toHaveBeenCalledTimes(2);
+        expect(Button.createRootNode).toHaveBeenCalledTimes(1);
       });
 
       it('is not updated when other props change', () => {
         wrapper.setProps({ id: 'test' });
         wrapper.setProps({ onClick: jest.fn() });
 
-        expect(Button.createRootNode).toHaveBeenCalledTimes(1);
+        expect(Button.createRootNode).not.toHaveBeenCalled();
       });
     });
   });

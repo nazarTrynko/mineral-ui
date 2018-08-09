@@ -523,10 +523,12 @@ describe('Table', () => {
           .mockReturnValue([{ key: 'aa', content: 'AA' }]);
 
         app = mountApp();
+        // $FlowFixMe - Flow doesn't know it is a mock
+        Table.getColumns.mockClear(); // Ignore initial call
       });
 
       afterEach(() => {
-        // $FlowFixMe
+        // $FlowFixMe - Flow doesn't know it is a mock
         Table.getColumns.mockRestore();
       });
 
@@ -535,7 +537,7 @@ describe('Table', () => {
           columns: [{ key: 'aa', content: 'AA' }]
         });
 
-        expect(Table.getColumns).toHaveBeenCalledTimes(2);
+        expect(Table.getColumns).toHaveBeenCalledTimes(1);
       });
 
       it('calls getColumns when no columns && data changed', () => {
@@ -543,7 +545,7 @@ describe('Table', () => {
           data: [{ aa: 'aa0', ab: 'ab0', ac: 'ac0', ad: 'ad0' }]
         });
 
-        expect(Table.getColumns).toHaveBeenCalledTimes(2);
+        expect(Table.getColumns).toHaveBeenCalledTimes(1);
       });
 
       it('does not call getColumns when other props change', () => {
@@ -551,7 +553,7 @@ describe('Table', () => {
           id: 'test'
         });
 
-        expect(Table.getColumns).toHaveBeenCalledTimes(1);
+        expect(Table.getColumns).not.toHaveBeenCalled();
       });
     });
 
@@ -562,10 +564,12 @@ describe('Table', () => {
         Table.getComparators = jest.fn().mockReturnValue({});
 
         app = mountApp();
+        // $FlowFixMe - Flow doesn't know it is a mock
+        Table.getComparators.mockClear(); // Ignore initial call
       });
 
       afterEach(() => {
-        // $FlowFixMe
+        // $FlowFixMe - Flow doesn't know it is a mock
         Table.getComparators.mockRestore();
       });
 
@@ -574,7 +578,7 @@ describe('Table', () => {
           columns: [{ key: 'aa', content: 'AA' }]
         });
 
-        expect(Table.getComparators).toHaveBeenCalledTimes(2);
+        expect(Table.getComparators).toHaveBeenCalledTimes(1);
       });
 
       it('does not call getComparators when other props change', () => {
@@ -582,7 +586,7 @@ describe('Table', () => {
           id: 'test'
         });
 
-        expect(Table.getComparators).toHaveBeenCalledTimes(1);
+        expect(Table.getComparators).not.toHaveBeenCalled();
       });
     });
   });

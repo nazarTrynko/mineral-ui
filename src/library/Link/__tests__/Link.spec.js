@@ -42,24 +42,26 @@ describe('Link', () => {
           .fn()
           .mockImplementation((props) => props.element);
         wrapper = mountInWrapper(<Link href="http://example.com">test</Link>);
+        // $FlowFixMe - Flow doesn't know it is a mock
+        Link.createRootNode.mockClear(); // Ignore initial call
       });
 
       afterEach(() => {
-        // $FlowFixMe
+        // $FlowFixMe - Flow doesn't know it is a mock
         Link.createRootNode.mockRestore();
       });
 
       it('is updated when element prop changes', () => {
         wrapper.setProps({ element: 'span' });
 
-        expect(Link.createRootNode).toHaveBeenCalledTimes(2);
+        expect(Link.createRootNode).toHaveBeenCalledTimes(1);
       });
 
       it('is not updated when other props change', () => {
         wrapper.setProps({ id: 'test' });
         wrapper.setProps({ onClick: jest.fn() });
 
-        expect(Link.createRootNode).toHaveBeenCalledTimes(1);
+        expect(Link.createRootNode).not.toHaveBeenCalled();
       });
     });
   });

@@ -28,24 +28,26 @@ describe('Box', () => {
           .fn()
           .mockImplementation((props) => props.element);
         wrapper = mountInWrapper(<Box />);
+        // $FlowFixMe - Flow doesn't know it is a mock
+        Box.createRootNode.mockClear(); // Ignore initial call
       });
 
       afterEach(() => {
-        // $FlowFixMe
+        // $FlowFixMe - Flow doesn't know it is a mock
         Box.createRootNode.mockRestore();
       });
 
       it('is updated when element prop changes', () => {
         wrapper.setProps({ element: 'span' });
 
-        expect(Box.createRootNode).toHaveBeenCalledTimes(2);
+        expect(Box.createRootNode).toHaveBeenCalledTimes(1);
       });
 
       it('is not updated when other props change', () => {
         wrapper.setProps({ id: 'test' });
         wrapper.setProps({ onClick: jest.fn() });
 
-        expect(Box.createRootNode).toHaveBeenCalledTimes(1);
+        expect(Box.createRootNode).not.toHaveBeenCalled();
       });
     });
   });
