@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
+import memoizeOne from 'memoize-one';
 import deepEqual from 'react-fast-compare';
 import Selectable from './Selectable';
 import Sortable, { type Comparators } from './Sortable';
@@ -120,34 +121,23 @@ const generateColumns = (data: Rows) =>
       }, [])
     : [];
 
-const getColumns = ({ columns, data }: Props) =>
-  columns || generateColumns(data);
-
-const getComparators = ({ columns }: Props) => {
-  const comparators =
-    columns &&
-    columns.reduce((acc, column) => {
-      const { key, sortComparator } = column;
-      if (sortComparator) {
-        acc[key] = sortComparator;
-      }
-      return acc;
-    }, {});
-
-  return comparators && Object.keys(comparators).length
-    ? comparators
-    : undefined;
+const getSelectableRows = (rows: Rows) => {
+  // console.log('getSelectableRows()');
+  return rows.filter((row) => !row.disabled);
 };
 
-const getSelectableRows = (rows: Rows) => rows.filter((row) => !row.disabled);
-
-const getSortable = ({ columns, defaultSort, sort, sortable }: Props) =>
-  Boolean(
+const getSortable = ({ columns, defaultSort, sort, sortable }: Props) => {
+  // console.log('getSortable()');
+  return Boolean(
     defaultSort ||
       sort ||
       sortable ||
       (columns && columns.some((column) => column.sortable))
   );
+};
+
+const deepEqualProp = (prop: string) => (newProps: Props, prevProps: Props) =>
+  deepEqual(newProps[prop], prevProps[prop]);
 
 /**
  * Table displays structured data with sortable columns and selectable rows.
@@ -167,31 +157,69 @@ class Table extends Component<Props> {
     titleElement: 'h4'
   };
 
-  columns: Columns = getColumns(this.props);
+  // columns: Columns = getColumns(this.props);
+  //
+  // comparators: Comparators | typeof undefined = getComparators(this.props);
+  //
+  // selectableRows: Rows = getSelectableRows(this.props.data);
+  //
+  // sortable: boolean = getSortable(this.props);
+  //
+  // componentWillUpdate(nextProps: Props) {
+  //   const columnsChanged = !deepEqual(this.props.columns, nextProps.columns);
+  //   const dataChanged = !deepEqual(this.props.data, nextProps.data);
+  //
+  //   if (columnsChanged || (!this.props.columns && dataChanged)) {
+  //     this.columns = getColumns(nextProps);
+  //   }
+  //
+  //   if (columnsChanged) {
+  //     this.sortable = getSortable(nextProps);
+  //     this.comparators = getComparators(nextProps);
+  //   }
+  //
+  //   if (dataChanged) {
+  //     this.selectableRows = getSelectableRows(nextProps.data);
+  //   }
+  // }
 
-  comparators: Comparators | typeof undefined = getComparators(this.props);
+  static getColumns = ({ columns, data }: Props) => {
+    return columns || generateColumns(data);
+  };
 
-  selectableRows: Rows = getSelectableRows(this.props.data);
+  static getComparators = ({ columns }: Props) => {
+    const comparators =
+      columns &&
+      columns.reduce((acc, column) => {
+        const { key, sortComparator } = column;
+        if (sortComparator) {
+          acc[key] = sortComparator;
+        }
+        return acc;
+      }, {});
 
-  sortable: boolean = getSortable(this.props);
+    return comparators && Object.keys(comparators).length
+      ? comparators
+      : undefined;
+  };
 
-  componentWillUpdate(nextProps: Props) {
-    const columnsChanged = !deepEqual(this.props.columns, nextProps.columns);
-    const dataChanged = !deepEqual(this.props.data, nextProps.data);
+  columns: Columns;
+  comparators: Comparators | typeof undefined;
+  selectableRows: Rows;
+  sortable: boolean;
 
-    if (columnsChanged || (!this.props.columns && dataChanged)) {
-      this.columns = getColumns(nextProps);
-    }
+  getColumns = memoizeOne(
+    Table.getColumns,
+    (newProps: Props, prevProps: Props) =>
+      deepEqual(prevProps.columns, newProps.columns) &&
+      (!prevProps.columns && deepEqual(prevProps.data, newProps.data))
+  );
 
-    if (columnsChanged) {
-      this.sortable = getSortable(nextProps);
-      this.comparators = getComparators(nextProps);
-    }
+  getComparators = memoizeOne(Table.getComparators, deepEqualProp('columns'));
 
-    if (dataChanged) {
-      this.selectableRows = getSelectableRows(nextProps.data);
-    }
-  }
+  getSelectableRows = memoizeOne(getSelectableRows, deepEqual);
+
+  getSortable = memoizeOne(getSortable, deepEqualProp('columns'));
 
   render() {
     const {
@@ -203,6 +231,11 @@ class Table extends Component<Props> {
       sortable,
       ...restProps
     } = this.props;
+
+    this.columns = this.getColumns(this.props);
+    this.comparators = this.getComparators(this.props);
+    this.selectableRows = this.getSelectableRows(this.props.data);
+    this.sortable = this.getSortable(this.props);
 
     const rootProps = {
       ...restProps,

@@ -1,5 +1,6 @@
 /* @flow */
 import { Component } from 'react';
+import { polyfill as reactLifecyclePolyfill } from 'react-lifecycles-compat';
 import deepEqual from 'react-fast-compare';
 
 type Props = {
@@ -29,10 +30,23 @@ export type SelectableType = {
 export type Toggle = (item: Item) => void;
 export type ToggleAll = () => void;
 
-export default class Selectable extends Component<Props, State> {
+class Selectable extends Component<Props, State> {
   state = {
     selected: this.props.defaultSelected || []
   };
+
+  // static getDerivedStateFromProps(
+  //   nextProps: Props,
+  //   prevState: State
+  // ): $Shape<State> | null {
+  //   if (!deepEqual(nextProps.selected, prevState.selected)) {
+  //     return {
+  //       selected: nextProps.selected
+  //     };
+  //   }
+  //
+  //   return null; // no change
+  // }
 
   componentWillReceiveProps(nextProps: Props) {
     if (!deepEqual(this.props.selected, nextProps.selected)) {
@@ -136,3 +150,5 @@ export default class Selectable extends Component<Props, State> {
     return this.isControlled(key) ? this.props[key] : this.state[key];
   };
 }
+
+export default reactLifecyclePolyfill(Selectable);

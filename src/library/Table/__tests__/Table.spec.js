@@ -512,4 +512,78 @@ describe('Table', () => {
       expect(sortedData).toMatchSnapshot();
     });
   });
+
+  fdescribe('memoization', () => {
+    describe('getColumns', () => {
+      let app;
+
+      beforeEach(() => {
+        Table.getColumns = jest
+          .fn()
+          .mockReturnValue([{ key: 'aa', content: 'AA' }]);
+
+        app = mountApp();
+      });
+
+      afterEach(() => {
+        // $FlowFixMe
+        Table.getColumns.mockRestore();
+      });
+
+      it('calls getColumns when columns change', () => {
+        app.setProps({
+          columns: [{ key: 'aa', content: 'AA' }]
+        });
+
+        expect(Table.getColumns).toHaveBeenCalledTimes(2);
+      });
+
+      it('calls getColumns when no columns && data changed', () => {
+        app.setState({
+          data: [{ aa: 'aa0', ab: 'ab0', ac: 'ac0', ad: 'ad0' }]
+        });
+
+        expect(Table.getColumns).toHaveBeenCalledTimes(2);
+      });
+
+      it('does not call getColumns when other props change', () => {
+        app.setProps({
+          id: 'test'
+        });
+
+        expect(Table.getColumns).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('getComparators', () => {
+      let app;
+
+      beforeEach(() => {
+        Table.getComparators = jest.fn().mockReturnValue({});
+
+        app = mountApp();
+      });
+
+      afterEach(() => {
+        // $FlowFixMe
+        Table.getComparators.mockRestore();
+      });
+
+      it('calls getComparators when columns change', () => {
+        app.setProps({
+          columns: [{ key: 'aa', content: 'AA' }]
+        });
+
+        expect(Table.getComparators).toHaveBeenCalledTimes(2);
+      });
+
+      it('does not call getComparators when other props change', () => {
+        app.setProps({
+          id: 'test'
+        });
+
+        expect(Table.getComparators).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
 });
