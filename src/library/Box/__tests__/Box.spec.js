@@ -30,7 +30,7 @@ describe('Box', () => {
     });
 
     afterEach(() => {
-      Box.createRootNode.mockReset();
+      Box.createRootNode.mockRestore();
     });
 
     it('is updated when element prop changes', () => {

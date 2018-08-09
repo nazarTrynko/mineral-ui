@@ -122,7 +122,7 @@ describe('Button', () => {
     });
 
     afterEach(() => {
-      Button.createRootNode.mockReset();
+      Button.createRootNode.mockRestore();
     });
 
     it('is updated when element prop changes', () => {

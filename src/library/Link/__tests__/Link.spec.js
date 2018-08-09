@@ -44,7 +44,7 @@ describe('Link', () => {
     });
 
     afterEach(() => {
-      Link.createRootNode.mockReset();
+      Link.createRootNode.mockRestore();
     });
 
     it('is updated when element prop changes', () => {

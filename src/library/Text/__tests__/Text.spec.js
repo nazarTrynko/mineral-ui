@@ -40,7 +40,7 @@ describe('Text', () => {
     });
 
     afterEach(() => {
-      Text.createRootNode.mockReset();
+      Text.createRootNode.mockRestore();
     });
 
     it('is updated when element prop changes', () => {
