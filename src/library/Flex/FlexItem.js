@@ -86,8 +86,7 @@ export default class FlexItem extends Component<Props> {
     });
   };
 
-  // Must be an instance method to prevent multiple component instances from
-  // resetting each other’s memoized keys
+  // Must be an instance method to avoid affecting other instances memoized keys
   getRootNode = memoizeOne(
     FlexItem.createRootNode,
     (newProps: Props, prevProps: Props) => newProps.flex === prevProps.flex

@@ -569,8 +569,7 @@ export default class Box extends Component<Props> {
     });
   };
 
-  // Must be an instance method to prevent multiple component instances from
-  // resetting each other’s memoized keys
+  // Must be an instance method to avoid affecting other instances memoized keys
   getRootNode = memoizeOne(
     Box.createRootNode,
     (newProps: Props, prevProps: Props) =>

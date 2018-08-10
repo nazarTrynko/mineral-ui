@@ -78,8 +78,7 @@ export default class Link extends Component<Props> {
     });
   };
 
-  // Must be an instance method to prevent multiple component instances from
-  // resetting each other’s memoized keys
+  // Must be an instance method to avoid affecting other instances memoized keys
   getRootNode = memoizeOne(
     Link.createRootNode,
     (newProps: Props, prevProps: Props) =>

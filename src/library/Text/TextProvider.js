@@ -47,8 +47,7 @@ export default class TextProvider extends Component<Props> {
     };
   }
 
-  // Must be an instance method to prevent multiple component instances from
-  // resetting each other’s memoized keys
+  // Must be an instance method to avoid affecting other instances memoized keys
   getRootNode = memoizeOne(
     Text.createRootNode,
     (newProps: Props, prevProps: Props) =>
