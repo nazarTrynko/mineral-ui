@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import { mountInThemeProvider } from '../../../../utils/enzymeUtils';
 import { ThemeProvider } from '../../themes';
 import Checkbox from '../../Checkbox';
-import Table from '../Table';
+import Table, { type Columns } from '../Table';
 import TableBase from '../TableBase';
 import TableBody from '../TableBody';
 import TableHeader from '../TableHeader';
@@ -518,9 +518,7 @@ describe('Table', () => {
       let app;
 
       beforeEach(() => {
-        Table.getColumns = jest
-          .fn()
-          .mockReturnValue([{ key: 'aa', content: 'AA' }]);
+        Table.getColumns = jest.fn().mockReturnValue(([]: Columns));
 
         app = mountApp();
         // $FlowFixMe - Flow doesn't know it is a mock
@@ -587,6 +585,72 @@ describe('Table', () => {
         });
 
         expect(Table.getComparators).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('getSelectableRows', () => {
+      let app;
+
+      beforeEach(() => {
+        Table.getSelectableRows = jest.fn().mockReturnValue([]);
+
+        app = mountApp();
+        // $FlowFixMe - Flow doesn't know it is a mock
+        Table.getSelectableRows.mockClear(); // Ignore initial call
+      });
+
+      afterEach(() => {
+        // $FlowFixMe - Flow doesn't know it is a mock
+        Table.getSelectableRows.mockRestore();
+      });
+
+      it('calls getSelectableRows when data change', () => {
+        app.setState({
+          data: [{ aa: 'aa0', ab: 'ab0', ac: 'ac0', ad: 'ad0' }]
+        });
+
+        expect(Table.getSelectableRows).toHaveBeenCalledTimes(1);
+      });
+
+      it('does not call getSelectableRows when other props change', () => {
+        app.setProps({
+          id: 'test'
+        });
+
+        expect(Table.getSelectableRows).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('getSortable', () => {
+      let app;
+
+      beforeEach(() => {
+        Table.getSortable = jest.fn().mockReturnValue(true);
+
+        app = mountApp();
+        // $FlowFixMe - Flow doesn't know it is a mock
+        Table.getSortable.mockClear(); // Ignore initial call
+      });
+
+      afterEach(() => {
+        // $FlowFixMe - Flow doesn't know it is a mock
+        Table.getSortable.mockRestore();
+      });
+
+      it('calls getSortable when columns change', () => {
+        app.setProps({
+          columns: [{ key: 'aa', content: 'AA' }]
+        });
+
+        expect(Table.getSortable).toHaveBeenCalledTimes(1);
+      });
+
+      it('does not call getSortable when other props change', () => {
+        app.setProps({
+          id: 'test'
+        });
+
+        expect(Table.getSortable).not.toHaveBeenCalled();
       });
     });
   });

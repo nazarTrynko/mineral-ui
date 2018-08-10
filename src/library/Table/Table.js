@@ -113,29 +113,6 @@ export type Messages = {
 export type Row = Object;
 export type Rows = Array<Row>;
 
-const generateColumns = (data: Rows) =>
-  data[0]
-    ? Object.keys(data[0]).reduce((acc, cell) => {
-        acc.push({ content: cell, key: cell });
-        return acc;
-      }, [])
-    : [];
-
-const getSelectableRows = (rows: Rows) => {
-  // console.log('getSelectableRows()');
-  return rows.filter((row) => !row.disabled);
-};
-
-const getSortable = ({ columns, defaultSort, sort, sortable }: Props) => {
-  // console.log('getSortable()');
-  return Boolean(
-    defaultSort ||
-      sort ||
-      sortable ||
-      (columns && columns.some((column) => column.sortable))
-  );
-};
-
 const deepEqualProp = (prop: string) => (newProps: Props, prevProps: Props) =>
   deepEqual(newProps[prop], prevProps[prop]);
 
@@ -157,34 +134,16 @@ class Table extends Component<Props> {
     titleElement: 'h4'
   };
 
-  // columns: Columns = getColumns(this.props);
-  //
-  // comparators: Comparators | typeof undefined = getComparators(this.props);
-  //
-  // selectableRows: Rows = getSelectableRows(this.props.data);
-  //
-  // sortable: boolean = getSortable(this.props);
-  //
-  // componentWillUpdate(nextProps: Props) {
-  //   const columnsChanged = !deepEqual(this.props.columns, nextProps.columns);
-  //   const dataChanged = !deepEqual(this.props.data, nextProps.data);
-  //
-  //   if (columnsChanged || (!this.props.columns && dataChanged)) {
-  //     this.columns = getColumns(nextProps);
-  //   }
-  //
-  //   if (columnsChanged) {
-  //     this.sortable = getSortable(nextProps);
-  //     this.comparators = getComparators(nextProps);
-  //   }
-  //
-  //   if (dataChanged) {
-  //     this.selectableRows = getSelectableRows(nextProps.data);
-  //   }
-  // }
-
   static getColumns = ({ columns, data }: Props) => {
-    return columns || generateColumns(data);
+    return (
+      columns ||
+      (data[0]
+        ? Object.keys(data[0]).reduce((acc, cell) => {
+            acc.push({ content: cell, key: cell });
+            return acc;
+          }, [])
+        : [])
+    );
   };
 
   static getComparators = ({ columns }: Props) => {
@@ -203,6 +162,19 @@ class Table extends Component<Props> {
       : undefined;
   };
 
+  static getSelectableRows = (rows: Rows) => {
+    return rows.filter((row) => !row.disabled);
+  };
+
+  static getSortable = ({ columns, defaultSort, sort, sortable }: Props) => {
+    return Boolean(
+      defaultSort ||
+        sort ||
+        sortable ||
+        (columns && columns.some((column) => column.sortable))
+    );
+  };
+
   columns: Columns;
   comparators: Comparators | typeof undefined;
   selectableRows: Rows;
@@ -217,9 +189,9 @@ class Table extends Component<Props> {
 
   getComparators = memoizeOne(Table.getComparators, deepEqualProp('columns'));
 
-  getSelectableRows = memoizeOne(getSelectableRows, deepEqual);
+  getSelectableRows = memoizeOne(Table.getSelectableRows, deepEqual);
 
-  getSortable = memoizeOne(getSortable, deepEqualProp('columns'));
+  getSortable = memoizeOne(Table.getSortable, deepEqualProp('columns'));
 
   render() {
     const {
@@ -242,7 +214,7 @@ class Table extends Component<Props> {
       columns: this.columns,
       comparators: this.comparators,
       ...(defaultSelectedRows
-        ? { defaultSelected: getSelectableRows(defaultSelectedRows) }
+        ? { defaultSelected: this.getSelectableRows(defaultSelectedRows) }
         : undefined),
       ...(onToggleRow ? { onToggle: onToggleRow } : undefined),
       ...(onToggleAllRows ? { onToggleAll: onToggleAllRows } : undefined),
