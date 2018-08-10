@@ -112,30 +112,36 @@ describe('Button', () => {
   });
 
   describe('memoization', () => {
-    describe('createRootNode', () => {
-      let wrapper;
+    let wrapper;
+    let mocks: Array<Function>;
 
-      beforeEach(() => {
-        Button.createRootNode = jest
-          .fn()
-          .mockImplementation((props) => props.element);
-        wrapper = mountInWrapper(<Button>test</Button>);
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Button.createRootNode.mockClear(); // Ignore initial call
-      });
+    beforeEach(() => {
+      Button.createRootNode = jest
+        .fn()
+        .mockImplementation((props) => props.element);
 
-      afterEach(() => {
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Button.createRootNode.mockRestore();
-      });
+      mocks = [Button.createRootNode];
 
-      it('is updated when element prop changes', () => {
+      wrapper = mountInWrapper(<Button>test</Button>);
+
+      // Ignore initial calls during first render
+      mocks.forEach((mock) => mock.mockClear());
+    });
+
+    afterEach(() => {
+      mocks.forEach((mock) => mock.mockRestore());
+    });
+
+    describe('when element prop changes', () => {
+      it('updates root node', () => {
         wrapper.setProps({ element: 'a' });
 
         expect(Button.createRootNode).toHaveBeenCalledTimes(1);
       });
+    });
 
-      it('is not updated when other props change', () => {
+    describe('when other props change', () => {
+      it('does not update root node', () => {
         wrapper.setProps({ id: 'test' });
         wrapper.setProps({ onClick: jest.fn() });
 
