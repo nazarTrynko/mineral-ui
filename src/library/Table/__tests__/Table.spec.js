@@ -513,143 +513,66 @@ describe('Table', () => {
     });
   });
 
-  fdescribe('memoization', () => {
-    describe('getColumns', () => {
-      let app;
+  describe('memoization', () => {
+    let app;
+    let mocks: Array<Function>;
 
-      beforeEach(() => {
-        Table.getColumns = jest.fn().mockReturnValue(([]: Columns));
+    beforeEach(() => {
+      Table.getColumns = jest.fn().mockReturnValue(([]: Columns));
+      Table.getComparators = jest.fn().mockReturnValue({});
+      Table.getSelectableRows = jest.fn().mockReturnValue([]);
+      Table.getSortable = jest.fn().mockReturnValue(true);
 
-        app = mountApp();
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Table.getColumns.mockClear(); // Ignore initial call
-      });
+      mocks = [
+        Table.getColumns,
+        Table.getComparators,
+        Table.getSelectableRows,
+        Table.getSortable
+      ];
 
-      afterEach(() => {
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Table.getColumns.mockRestore();
-      });
+      app = mountApp();
 
-      it('calls getColumns when columns change', () => {
-        app.setProps({
-          columns: [{ key: 'aa', content: 'AA' }]
-        });
+      // Ignore initial calls during first render
+      // $FlowFixMe - JestMockFn<any, any>
+      mocks.forEach((mock) => mock.mockClear());
+    });
 
-        expect(Table.getColumns).toHaveBeenCalledTimes(1);
-      });
+    afterEach(() => {
+      mocks.forEach((mock) => mock.mockRestore());
+    });
 
-      it('calls getColumns when no columns && data changed', () => {
+    describe('when data changes', () => {
+      it('updates memoized values', () => {
         app.setState({
           data: [{ aa: 'aa0', ab: 'ab0', ac: 'ac0', ad: 'ad0' }]
         });
 
         expect(Table.getColumns).toHaveBeenCalledTimes(1);
+        expect(Table.getSelectableRows).toHaveBeenCalledTimes(1);
       });
+    });
 
-      it('does not call getColumns when other props change', () => {
+    describe('when columns change', () => {
+      it('updates memoized values', () => {
+        app.setProps({
+          columns: [{ key: 'aa', content: 'AA' }]
+        });
+
+        expect(Table.getColumns).toHaveBeenCalledTimes(1);
+        expect(Table.getComparators).toHaveBeenCalledTimes(1);
+        expect(Table.getSortable).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('when other props change', () => {
+      it('uses memoized values', () => {
         app.setProps({
           id: 'test'
         });
 
         expect(Table.getColumns).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('getComparators', () => {
-      let app;
-
-      beforeEach(() => {
-        Table.getComparators = jest.fn().mockReturnValue({});
-
-        app = mountApp();
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Table.getComparators.mockClear(); // Ignore initial call
-      });
-
-      afterEach(() => {
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Table.getComparators.mockRestore();
-      });
-
-      it('calls getComparators when columns change', () => {
-        app.setProps({
-          columns: [{ key: 'aa', content: 'AA' }]
-        });
-
-        expect(Table.getComparators).toHaveBeenCalledTimes(1);
-      });
-
-      it('does not call getComparators when other props change', () => {
-        app.setProps({
-          id: 'test'
-        });
-
         expect(Table.getComparators).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('getSelectableRows', () => {
-      let app;
-
-      beforeEach(() => {
-        Table.getSelectableRows = jest.fn().mockReturnValue([]);
-
-        app = mountApp();
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Table.getSelectableRows.mockClear(); // Ignore initial call
-      });
-
-      afterEach(() => {
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Table.getSelectableRows.mockRestore();
-      });
-
-      it('calls getSelectableRows when data change', () => {
-        app.setState({
-          data: [{ aa: 'aa0', ab: 'ab0', ac: 'ac0', ad: 'ad0' }]
-        });
-
-        expect(Table.getSelectableRows).toHaveBeenCalledTimes(1);
-      });
-
-      it('does not call getSelectableRows when other props change', () => {
-        app.setProps({
-          id: 'test'
-        });
-
         expect(Table.getSelectableRows).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('getSortable', () => {
-      let app;
-
-      beforeEach(() => {
-        Table.getSortable = jest.fn().mockReturnValue(true);
-
-        app = mountApp();
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Table.getSortable.mockClear(); // Ignore initial call
-      });
-
-      afterEach(() => {
-        // $FlowFixMe - Flow doesn't know it is a mock
-        Table.getSortable.mockRestore();
-      });
-
-      it('calls getSortable when columns change', () => {
-        app.setProps({
-          columns: [{ key: 'aa', content: 'AA' }]
-        });
-
-        expect(Table.getSortable).toHaveBeenCalledTimes(1);
-      });
-
-      it('does not call getSortable when other props change', () => {
-        app.setProps({
-          id: 'test'
-        });
-
         expect(Table.getSortable).not.toHaveBeenCalled();
       });
     });
