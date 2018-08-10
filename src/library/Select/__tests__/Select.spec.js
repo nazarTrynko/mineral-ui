@@ -1,7 +1,10 @@
 /* @flow */
 import React from 'react';
 import { shallow } from 'enzyme';
-import { mountInThemeProvider } from '../../../../utils/enzymeUtils';
+import {
+  mountInThemeProvider,
+  mountInWrapper
+} from '../../../../utils/enzymeUtils';
 import { DropdownContent } from '../../Dropdown';
 import { MenuItem } from '../../Menu';
 import Select, { componentTheme } from '../../Select/Select';
@@ -588,6 +591,47 @@ describe('Select', () => {
             expect(select.props().onChange).toHaveBeenCalled();
           });
         });
+      });
+    });
+  });
+
+  describe('memoization', () => {
+    let wrapper;
+    let mocks: Array<Function>;
+
+    beforeEach(() => {
+      const items: Items = [];
+      Select.getItems = jest.fn().mockReturnValue(items);
+
+      mocks = [Select.getItems];
+
+      wrapper = mountInWrapper(<Select data={items} />);
+
+      // Ignore initial calls during first render
+      mocks.forEach((mock) => mock.mockClear());
+    });
+
+    afterEach(() => {
+      mocks.forEach((mock) => mock.mockRestore());
+    });
+
+    describe('when data changes', () => {
+      it('updates memoized values', () => {
+        wrapper.setState({
+          data
+        });
+
+        expect(Select.getItems).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('when other props change', () => {
+      it('uses memoized values', () => {
+        wrapper.setProps({
+          id: 'test'
+        });
+
+        expect(Select.getItems).not.toHaveBeenCalled();
       });
     });
   });

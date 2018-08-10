@@ -205,6 +205,8 @@ export default class Select extends Component<Props, State> {
     size: 'large'
   };
 
+  static getItems = getItems;
+
   state: State = {
     highlightedIndex: this.props.defaultHighlightedIndex,
     isOpen: Boolean(this.props.defaultIsOpen),
@@ -217,7 +219,7 @@ export default class Select extends Component<Props, State> {
 
   items: Items;
 
-  getItems = memoizeOne(getItems, deepEqual);
+  getItems = memoizeOne(Select.getItems, deepEqual);
 
   selectTrigger: ?React$Component<*, *>;
 
