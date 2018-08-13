@@ -89,7 +89,7 @@ export default class FlexItem extends Component<Props> {
   // Must be an instance method to avoid affecting other instances memoized keys
   getRootNode = memoizeOne(
     FlexItem.createRootNode,
-    (newProps: Props, prevProps: Props) => newProps.flex === prevProps.flex
+    (nextProps: Props, prevProps: Props) => nextProps.flex === prevProps.flex
   );
 
   render() {

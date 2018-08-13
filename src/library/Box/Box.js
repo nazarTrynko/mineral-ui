@@ -572,8 +572,8 @@ export default class Box extends Component<Props> {
   // Must be an instance method to avoid affecting other instances memoized keys
   getRootNode = memoizeOne(
     Box.createRootNode,
-    (newProps: Props, prevProps: Props) =>
-      newProps.element === prevProps.element
+    (nextProps: Props, prevProps: Props) =>
+      nextProps.element === prevProps.element
   );
 
   render() {

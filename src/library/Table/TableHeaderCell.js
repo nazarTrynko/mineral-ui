@@ -141,8 +141,8 @@ export default class TableHeaderCell extends PureComponent<Props> {
   // Must be an instance method to avoid affecting other instances memoized keys
   getRootNode = memoizeOne(
     TableHeaderCell.createRootNode,
-    (newProps: Props, prevProps: Props) =>
-      newProps.element === prevProps.element
+    (nextProps: Props, prevProps: Props) =>
+      nextProps.element === prevProps.element
   );
 
   render() {

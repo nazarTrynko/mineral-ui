@@ -347,8 +347,8 @@ export default class FauxControl extends Component<Props> {
   // resetting each other’s memoized keys
   getControlNode = memoizeOne(
     FauxControl.createControlNode,
-    (newProps: Props, prevProps: Props) =>
-      newProps.control === prevProps.control
+    (nextProps: Props, prevProps: Props) =>
+      nextProps.control === prevProps.control
   );
 
   render() {

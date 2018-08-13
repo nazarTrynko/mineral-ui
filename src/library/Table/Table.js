@@ -113,8 +113,8 @@ export type Messages = {
 export type Row = Object;
 export type Rows = Array<Row>;
 
-const deepEqualProp = (prop: string) => (newProps: Props, prevProps: Props) =>
-  deepEqual(newProps[prop], prevProps[prop]);
+const deepEqualProp = (prop: string) => (nextProps: Props, prevProps: Props) =>
+  deepEqual(nextProps[prop], prevProps[prop]);
 
 /**
  * Table displays structured data with sortable columns and selectable rows.
@@ -182,9 +182,9 @@ class Table extends Component<Props> {
 
   getColumns = memoizeOne(
     Table.getColumns,
-    (newProps: Props, prevProps: Props) =>
-      deepEqual(prevProps.columns, newProps.columns) &&
-      (!prevProps.columns && deepEqual(prevProps.data, newProps.data))
+    (nextProps: Props, prevProps: Props) =>
+      deepEqual(prevProps.columns, nextProps.columns) &&
+      (!prevProps.columns && deepEqual(prevProps.data, nextProps.data))
   );
 
   getComparators = memoizeOne(Table.getComparators, deepEqualProp('columns'));
