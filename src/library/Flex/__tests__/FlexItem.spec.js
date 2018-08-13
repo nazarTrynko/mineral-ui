@@ -3,6 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { mountInWrapper } from '../../../../utils/enzymeUtils';
 import testDemoExamples from '../../../../utils/testDemoExamples';
+import { createStyledComponent } from '../../styles';
 import { FlexItem } from '../../Flex';
 import examples from '../../../website/app/demos/Flex/examples/FlexItem';
 
@@ -40,7 +41,10 @@ describe('FlexItem', () => {
     let mocks: Array<Function>;
 
     beforeEach(() => {
-      FlexItem.createRootNode = jest.fn().mockImplementation(() => 'div');
+      FlexItem.createRootNode = jest
+        .fn()
+        // Div is wrapped to prevent invalid dom attribute warning in console
+        .mockImplementation(() => createStyledComponent('div', {}));
 
       mocks = [FlexItem.createRootNode];
 
