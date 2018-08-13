@@ -1,7 +1,11 @@
 /* @flow */
 import React from 'react';
 import { shallow } from 'enzyme';
-import { mountInThemeProvider, spyOn } from '../../../../utils/enzymeUtils';
+import {
+  mountInThemeProvider,
+  mountInWrapper,
+  spyOn
+} from '../../../../utils/enzymeUtils';
 import Dropdown, { componentTheme } from '../../Dropdown/Dropdown';
 import { DropdownContent, DropdownTrigger } from '../../Dropdown';
 import PopoverTrigger from '../../Popover/PopoverTrigger';
@@ -557,6 +561,51 @@ describe('Dropdown', () => {
         itemSelectionAssertions({
           simulateArgs: ['keydown', { key: ' ' }]
         });
+      });
+    });
+  });
+
+  describe('memoization', () => {
+    let wrapper;
+    let mocks: Array<Function>;
+
+    beforeEach(() => {
+      const items: Items = [];
+      Dropdown.getItems = jest.fn().mockReturnValue(items);
+
+      mocks = [Dropdown.getItems];
+
+      wrapper = mountInWrapper(
+        <Dropdown data={items}>
+          <button>trigger</button>
+        </Dropdown>
+      );
+
+      // Ignore initial calls during first render
+      mocks.forEach((mock) => mock.mockClear());
+    });
+
+    afterEach(() => {
+      mocks.forEach((mock) => mock.mockRestore());
+    });
+
+    describe('when data changes', () => {
+      it('updates memoized values', () => {
+        wrapper.setState({
+          data
+        });
+
+        expect(Dropdown.getItems).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('when other props change', () => {
+      it('uses memoized values', () => {
+        wrapper.setProps({
+          id: 'test'
+        });
+
+        expect(Dropdown.getItems).not.toHaveBeenCalled();
       });
     });
   });

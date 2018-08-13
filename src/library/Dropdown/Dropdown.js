@@ -130,6 +130,8 @@ export default class Dropdown extends Component<Props, State> {
     placement: 'bottom-start'
   };
 
+  static getItems = getItems;
+
   state: State = {
     highlightedIndex: this.props.defaultHighlightedIndex,
     isOpen: Boolean(this.props.defaultIsOpen)
@@ -145,7 +147,7 @@ export default class Dropdown extends Component<Props, State> {
 
   items: Items;
 
-  getItems = memoizeOne(getItems, deepEqual);
+  getItems = memoizeOne(Dropdown.getItems, deepEqual);
 
   render() {
     const {
