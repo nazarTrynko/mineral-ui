@@ -232,7 +232,10 @@ export default class Select extends Component<Props, State> {
       trigger,
       ...restProps
     } = this.props;
+
     const isOpen = this.getControllableValue('isOpen');
+
+    this.items = this.getItems(data);
 
     const rootProps = {
       ...restProps,
@@ -249,8 +252,6 @@ export default class Select extends Component<Props, State> {
       onOpen: this.open,
       menu: this.renderMenu
     };
-
-    this.items = this.getItems(data);
 
     return (
       <Root {...rootProps}>
