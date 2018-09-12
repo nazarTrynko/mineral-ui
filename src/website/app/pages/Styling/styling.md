@@ -66,8 +66,12 @@ This function is used to create a new styled component based on another componen
 **Parameters**
 
  * `element`: A React component or a DOM element tag name
- * `styles`: A [style rule object](https://emotion.sh/docs/css), an array of style rule objects, or a function that accepts props and context and returns either a style
- rule object or an array of style rule objects.
+ * `styles`: Can be any of the following:
+   1. [Style rule object](https://emotion.sh/docs/css)
+   1. Array of style rule objects
+   1. Function that accepts props and context and returns either a style rule
+     object or an array of style rule objects
+   1. Array containing any of the above
  * `options`: Optional. An object with the following shape. All properties are optional.
 
 | Option              | Type          | Description                                                                                        |

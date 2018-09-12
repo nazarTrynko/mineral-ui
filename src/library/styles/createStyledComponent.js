@@ -10,10 +10,10 @@ type Element =
   | React$ComponentType<*>
   | string;
 
-type Styles =
-  | Object
-  | Array<Object>
-  | ((props: Object, context?: Object) => Object | Array<Object>);
+type StylesIn = Object | StylesFn | Array<StylesIn>;
+type StylesOut = Object | Array<StylesOut>;
+type MappedStylesOut = Array<Object | MappedStylesOut>;
+type StylesFn = (props: Object, context?: Object) => StylesOut;
 
 type Options = {
   displayName?: string,
@@ -24,9 +24,32 @@ type Options = {
   withProps?: Object
 };
 
+const getComponentStyles = (
+  styles: StylesIn,
+  props: Object,
+  context?: Object
+): StylesOut =>
+  Array.isArray(styles)
+    ? mapStyles(styles, props, context)
+    : maybeRunStylesFunction(styles, props, context);
+
+const mapStyles = (
+  styles: Array<StylesIn>,
+  props: Object,
+  context?: Object
+): MappedStylesOut =>
+  styles.map((style) => getComponentStyles(style, props, context));
+
+const maybeRunStylesFunction = (
+  styles: StylesIn,
+  props: Object,
+  context?: Object
+): StylesOut =>
+  typeof styles === 'function' ? styles(props, context) : styles;
+
 export default function createStyledComponent(
   element: Element,
-  styles: Styles,
+  styles: StylesIn,
   options?: Options = {}
 ) {
   const {
@@ -37,12 +60,8 @@ export default function createStyledComponent(
     rootEl,
     withProps
   } = options;
-  const outStyles = (
-    props: Object,
-    context?: Object
-  ): Object | Array<Object> => {
-    let componentStyles =
-      typeof styles === 'function' ? styles(props, context) : styles;
+  const outStyles = (props: Object, context?: Object): StylesOut => {
+    let componentStyles = getComponentStyles(styles, props, context);
 
     if (includeStyleReset) {
       const resetStyles = componentStyleReset(props);

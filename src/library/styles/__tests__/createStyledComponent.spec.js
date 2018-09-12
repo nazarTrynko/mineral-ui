@@ -97,6 +97,14 @@ describe('createStyledComponent', () => {
   describe('styles', () => {
     const styleObject = { color: 'red' };
     const styleArray = [{ color: 'red' }, { backgroundColor: 'blue' }];
+    const styleArrayWithFunction = [
+      ({ primary }) => ({ color: primary ? 'red' : 'blue' }),
+      { backgroundColor: 'blue' }
+    ];
+    const styleArrayWithNestedArray = [
+      [{ color: 'red' }],
+      { backgroundColor: 'blue' }
+    ];
     const styleObjectFunction = () => styleObject;
     const styleArrayFunction = () => styleArray;
 
@@ -104,13 +112,6 @@ describe('createStyledComponent', () => {
       const wrapper = mountButton({}, styleObject);
 
       expect(wrapper).toHaveStyleRule('color', 'red');
-    });
-
-    it('supports style arrays', () => {
-      const wrapper = mountButton({}, styleArray);
-
-      expect(wrapper).toHaveStyleRule('color', 'red');
-      expect(wrapper).toHaveStyleRule('background-color', 'blue');
     });
 
     it('supports style functions that return objects', () => {
@@ -121,6 +122,27 @@ describe('createStyledComponent', () => {
 
     it('supports style functions that return arrays', () => {
       const wrapper = mountButton({}, styleArrayFunction);
+
+      expect(wrapper).toHaveStyleRule('color', 'red');
+      expect(wrapper).toHaveStyleRule('background-color', 'blue');
+    });
+
+    it('supports style arrays', () => {
+      const wrapper = mountButton({}, styleArray);
+
+      expect(wrapper).toHaveStyleRule('color', 'red');
+      expect(wrapper).toHaveStyleRule('background-color', 'blue');
+    });
+
+    it('supports style arrays which contain functions', () => {
+      const wrapper = mountButton({ primary: true }, styleArrayWithFunction);
+
+      expect(wrapper).toHaveStyleRule('color', 'red');
+      expect(wrapper).toHaveStyleRule('background-color', 'blue');
+    });
+
+    it('supports style arrays which contain arrays', () => {
+      const wrapper = mountButton({}, styleArrayWithNestedArray);
 
       expect(wrapper).toHaveStyleRule('color', 'red');
       expect(wrapper).toHaveStyleRule('background-color', 'blue');
