@@ -46,7 +46,7 @@ export default function ComponentsByCategory() {
                 components.map((IconComponent, index) => {
                   return (
                     <Figure tabIndex={0} key={index}>
-                      <IconComponent size="32" />
+                      <IconComponent size={32} />
                       <FigCaption>{IconComponent.displayName}</FigCaption>
                     </Figure>
                   );

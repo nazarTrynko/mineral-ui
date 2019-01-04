@@ -22,7 +22,7 @@ export const OverflowContainerRoot = createStyledComponent(
       ...(hideScrollbars
         ? {
             overflow: '-moz-scrollbars-none',
-            '-ms-overflow-style': 'none',
+            msOverflowStyle: 'none',
 
             '&::-webkit-scrollbar': {
               display: 'none'
