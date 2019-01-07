@@ -11,10 +11,10 @@ export default class PopoverContent extends Component<PopoverContentProps> {
   static displayName = 'PopoverContent';
 
   render() {
-    const { children, hasArrow, subtitle, title, ...restProps } = this.props;
+    const { children, hasArrow, placement, subtitle, title, ...restProps } = this.props;
 
     return (
-      <Root>
+      <Root placement={placement}>
         {({ ref, style, placement, arrowProps }) => {
           const popoverContentWrapperProps = {
             'data-placement': placement,

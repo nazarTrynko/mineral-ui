@@ -72,7 +72,7 @@ export const PopoverBlock = createThemedComponent(CardBlock, cardOverrides);
 export const PopoverTitle = createThemedComponent(CardTitle, cardOverrides);
 
 export const PopoverArrowRoot = createStyledComponent(
-  'div',
+  'span',
   ({ placement, size, theme: baseTheme }) => {
     const theme = popoverArrowTheme(baseTheme);
     let arrowShadow = ', 0 3px 1px rgba(0, 0, 0, 0.3)';

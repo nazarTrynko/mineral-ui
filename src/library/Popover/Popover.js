@@ -50,8 +50,7 @@ export default class Popover extends Component<PopoverProps, PopoverState> {
 
           const rootProps = {
             ...restProps,
-            modifiers: modifiers || contextModifiers,
-            tag: 'span'
+            modifiers: modifiers || contextModifiers
           };
 
           return (
