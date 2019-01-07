@@ -1,10 +1,9 @@
 /* @flow */
-import { Arrow, Manager, Target } from 'react-popper';
+import { Manager } from 'react-popper';
 import { createStyledComponent } from '../styles';
 import { createThemedComponent } from '../themes';
 import CardBlock from '../Card/CardBlock';
 import CardTitle from '../Card/CardTitle';
-import RtlPopper from './RtlPopper';
 import { popoverArrowTheme, popoverContentTheme } from './themes';
 import { ARROW_SIZE } from './constants';
 
@@ -21,8 +20,8 @@ export const PopoverRoot = createStyledComponent(
   }
 );
 
-export const PopoverContentRoot = createStyledComponent(
-  RtlPopper,
+export const PopoverContentWrapper = createStyledComponent(
+  'div',
   ({ theme: baseTheme }) => {
     const theme = popoverContentTheme(baseTheme);
 
@@ -73,7 +72,7 @@ export const PopoverBlock = createThemedComponent(CardBlock, cardOverrides);
 export const PopoverTitle = createThemedComponent(CardTitle, cardOverrides);
 
 export const PopoverArrowRoot = createStyledComponent(
-  Arrow,
+  'div',
   ({ placement, size, theme: baseTheme }) => {
     const theme = popoverArrowTheme(baseTheme);
     let arrowShadow = ', 0 3px 1px rgba(0, 0, 0, 0.3)';
@@ -144,7 +143,7 @@ export const PopoverArrowRoot = createStyledComponent(
 );
 
 export const PopoverTriggerRoot = createStyledComponent(
-  Target,
+  'span',
   ({ cursor }) => ({
     cursor,
     display: 'inline-block'

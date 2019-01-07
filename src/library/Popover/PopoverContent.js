@@ -1,11 +1,8 @@
 /* @flow */
 import React, { Component } from 'react';
 import PopoverArrow from './PopoverArrow';
-import {
-  PopoverContentRoot as Root,
-  PopoverBlock,
-  PopoverTitle
-} from './styled';
+import Root from './RtlPopper';
+import { PopoverContentWrapper, PopoverBlock, PopoverTitle } from './styled';
 import { ARROW_SIZE } from './constants';
 
 import type { PopoverContentProps } from './types';
@@ -14,41 +11,32 @@ export default class PopoverContent extends Component<PopoverContentProps> {
   static displayName = 'PopoverContent';
 
   render() {
-    const {
-      children,
-      hasArrow,
-      placement,
-      subtitle,
-      title,
-      ...restProps
-    } = this.props;
-
-    const rootProps = {
-      placement,
-      ...restProps
-    };
-    const popoverArrowProps = {
-      size: ARROW_SIZE,
-      placement
-    };
+    const { children, hasArrow, subtitle, title, ...restProps } = this.props;
 
     return (
-      <Root {...rootProps}>
-        {({ popperProps, restProps }) => {
-          const wrapperProps = {
-            ...popperProps,
+      <Root>
+        {({ ref, style, placement, arrowProps }) => {
+          const popoverContentWrapperProps = {
+            'data-placement': placement,
+            ref,
+            style,
             ...restProps
           };
-          popoverArrowProps.placement = wrapperProps['data-placement'];
+
+          const popoverArrowProps = {
+            size: ARROW_SIZE,
+            placement,
+            ...arrowProps
+          };
 
           return (
-            <div {...wrapperProps}>
+            <PopoverContentWrapper {...popoverContentWrapperProps}>
               {title && (
                 <PopoverTitle subtitle={subtitle}>{title}</PopoverTitle>
               )}
               <PopoverBlock>{children}</PopoverBlock>
               {hasArrow && <PopoverArrow {...popoverArrowProps} />}
-            </div>
+            </PopoverContentWrapper>
           );
         }}
       </Root>

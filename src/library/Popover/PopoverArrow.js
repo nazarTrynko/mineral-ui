@@ -4,12 +4,14 @@ import { PopoverArrowRoot as Root } from './styled';
 
 import type { PopoverArrowProps } from './types';
 
-export default function PopoverArrow(props: PopoverArrowProps) {
+const PopoverArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
   return (
-    <Root {...props} aria-hidden>
+    <Root {...props} aria-hidden ref={ref}>
       ▼
     </Root>
   );
-}
+});
 
 PopoverArrow.displayName = 'PopoverArrow';
+
+export default PopoverArrow;

@@ -100,11 +100,13 @@ export default class Popover extends Component<PopoverProps, PopoverState> {
   setTriggerRef = (node: ?React$Component<*, *>) => {
     const { triggerRef } = this.props;
 
+    console.log('Popover.setTriggerRef()', node, triggerRef);
     this.popoverTrigger = node;
     triggerRef && triggerRef(node);
   };
 
   setContentRef = (node: ?React$Component<*, *>) => {
+    console.log('Popover.setContentRef()', node);
     this.popoverContent = node;
   };
 
