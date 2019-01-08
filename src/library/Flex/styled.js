@@ -84,8 +84,8 @@ export const createFlexItemRootNode: CreateRootNode<FlexItemProps> = (
 
   return createStyledComponent(
     component,
-    ({ alignSelf, breakpoints, grow, shrink, theme, width }) =>
-      getResponsiveStyles({
+    ({ alignSelf, breakpoints, grow, shrink, theme, width }) => ({
+      ...getResponsiveStyles({
         breakpoints,
         mapValueToProperty: flexItemMapValueToProperty,
         styles: {
@@ -96,6 +96,8 @@ export const createFlexItemRootNode: CreateRootNode<FlexItemProps> = (
         },
         theme
       }),
+      minWidth: 0
+    }),
     {
       displayName: 'FlexItem',
       filterProps: ['inline', 'width']
