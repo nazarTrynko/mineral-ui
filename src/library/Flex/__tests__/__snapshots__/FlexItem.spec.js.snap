@@ -127,6 +127,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -169,6 +170,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -207,6 +209,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -249,6 +252,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -287,6 +291,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -329,6 +334,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -367,6 +373,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -408,6 +415,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -515,6 +523,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -562,6 +571,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -609,6 +619,7 @@ exports[`FlexItem demo examples Snapshots: align-self 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1217,6 +1228,7 @@ exports[`FlexItem demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1256,6 +1268,7 @@ exports[`FlexItem demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1300,6 +1313,7 @@ exports[`FlexItem demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1603,6 +1617,7 @@ exports[`FlexItem demo examples Snapshots: box-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1642,6 +1657,7 @@ exports[`FlexItem demo examples Snapshots: box-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1686,6 +1702,7 @@ exports[`FlexItem demo examples Snapshots: box-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1752,6 +1769,7 @@ exports[`FlexItem demo examples Snapshots: box-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1807,6 +1825,7 @@ exports[`FlexItem demo examples Snapshots: box-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -2163,6 +2182,7 @@ exports[`FlexItem demo examples Snapshots: flex-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -2219,6 +2239,7 @@ exports[`FlexItem demo examples Snapshots: flex-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -2285,6 +2306,7 @@ exports[`FlexItem demo examples Snapshots: flex-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -2360,6 +2382,7 @@ exports[`FlexItem demo examples Snapshots: flex-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -2408,6 +2431,7 @@ exports[`FlexItem demo examples Snapshots: flex-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -2461,6 +2485,7 @@ exports[`FlexItem demo examples Snapshots: flex-props 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -2948,6 +2973,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -2987,6 +3013,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -3031,6 +3058,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -3076,6 +3104,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -3115,6 +3144,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -3159,6 +3189,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -3194,6 +3225,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -3233,6 +3265,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -3268,6 +3301,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -3307,6 +3341,7 @@ exports[`FlexItem demo examples Snapshots: grow 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4000,6 +4035,7 @@ exports[`FlexItem demo examples Snapshots: responsive 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4043,6 +4079,7 @@ exports[`FlexItem demo examples Snapshots: responsive 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4096,6 +4133,7 @@ exports[`FlexItem demo examples Snapshots: responsive 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4549,6 +4587,7 @@ exports[`FlexItem demo examples Snapshots: shrink 1`] = `
   -webkit-flex-shrink: 3;
   -ms-flex-negative: 3;
   flex-shrink: 3;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4588,6 +4627,7 @@ exports[`FlexItem demo examples Snapshots: shrink 1`] = `
   -webkit-flex-shrink: 3;
   -ms-flex-negative: 3;
   flex-shrink: 3;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4623,6 +4663,7 @@ exports[`FlexItem demo examples Snapshots: shrink 1`] = `
   -webkit-flex-shrink: 2;
   -ms-flex-negative: 2;
   flex-shrink: 2;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4662,6 +4703,7 @@ exports[`FlexItem demo examples Snapshots: shrink 1`] = `
   -webkit-flex-shrink: 2;
   -ms-flex-negative: 2;
   flex-shrink: 2;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4697,6 +4739,7 @@ exports[`FlexItem demo examples Snapshots: shrink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -4735,6 +4778,7 @@ exports[`FlexItem demo examples Snapshots: shrink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;

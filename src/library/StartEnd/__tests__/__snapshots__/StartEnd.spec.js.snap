@@ -12,6 +12,7 @@ exports[`StartEnd demo examples Snapshots: align-items 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-3 {
@@ -35,6 +36,7 @@ exports[`StartEnd demo examples Snapshots: align-items 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-3 *,
@@ -116,6 +118,7 @@ exports[`StartEnd demo examples Snapshots: align-items 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-9 *,
@@ -1118,6 +1121,7 @@ exports[`StartEnd demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-3 {
@@ -1141,6 +1145,7 @@ exports[`StartEnd demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-3 *,
@@ -1222,6 +1227,7 @@ exports[`StartEnd demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-9 *,
@@ -1412,6 +1418,7 @@ exports[`StartEnd demo examples Snapshots: direction 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-1 {
@@ -1487,6 +1494,7 @@ exports[`StartEnd demo examples Snapshots: direction 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-3 *,
@@ -1786,6 +1794,7 @@ exports[`StartEnd demo examples Snapshots: priority 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-23 {
@@ -1809,6 +1818,7 @@ exports[`StartEnd demo examples Snapshots: priority 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-23 *,
@@ -1890,6 +1900,7 @@ exports[`StartEnd demo examples Snapshots: priority 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-9 *,
@@ -1919,6 +1930,7 @@ exports[`StartEnd demo examples Snapshots: priority 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-3 {
@@ -1942,6 +1954,7 @@ exports[`StartEnd demo examples Snapshots: priority 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-3 *,
@@ -1970,6 +1983,7 @@ exports[`StartEnd demo examples Snapshots: priority 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-29 *,
@@ -2629,6 +2643,7 @@ exports[`StartEnd demo examples Snapshots: responsive 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 @media (min-width:800px) {
@@ -2657,6 +2672,7 @@ exports[`StartEnd demo examples Snapshots: responsive 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-3 *,
@@ -2696,6 +2712,7 @@ exports[`StartEnd demo examples Snapshots: responsive 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-9 *,
@@ -3116,6 +3133,7 @@ exports[`StartEnd demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-1 {
@@ -3191,6 +3209,7 @@ exports[`StartEnd demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-9 *,
@@ -3220,6 +3239,7 @@ exports[`StartEnd demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-3 *,

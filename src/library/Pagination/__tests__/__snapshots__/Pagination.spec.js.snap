@@ -192,6 +192,7 @@ exports[`Pagination demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-40 {
@@ -214,6 +215,7 @@ exports[`Pagination demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-40 *,
@@ -238,6 +240,7 @@ exports[`Pagination demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-36 > button:not(:last-child),
@@ -265,6 +268,7 @@ exports[`Pagination demo examples Snapshots: basic 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-35 *,
@@ -1655,6 +1659,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-51 {
@@ -1683,6 +1688,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-50 {
@@ -1721,6 +1727,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-50 *,
@@ -1740,6 +1747,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-47 {
@@ -1763,6 +1771,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-47 *,
@@ -1786,6 +1795,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   width: 4.65em;
 }
 
@@ -1809,6 +1819,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   width: 4.65em;
 }
 
@@ -2093,6 +2104,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-24 *,
@@ -2117,6 +2129,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-87 > button:not(:last-child),
@@ -2144,6 +2157,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-86 *,
@@ -3206,6 +3220,7 @@ exports[`Pagination demo examples Snapshots: kitchen-sink 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-27 *,
@@ -12208,6 +12223,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-21 {
@@ -12236,6 +12252,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-20 {
@@ -12274,6 +12291,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-20 *,
@@ -12293,6 +12311,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-17 {
@@ -12316,6 +12335,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-17 *,
@@ -12339,6 +12359,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   width: 4.65em;
 }
 
@@ -12362,6 +12383,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   width: 4.65em;
 }
 
@@ -12646,6 +12668,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-67 *,
@@ -12670,6 +12693,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-63 > button:not(:last-child),
@@ -12697,6 +12721,7 @@ exports[`Pagination demo examples Snapshots: page-jumper 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-62 *,
@@ -14509,6 +14534,7 @@ exports[`Pagination demo examples Snapshots: page-sizer 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-75 {
@@ -14537,6 +14563,7 @@ exports[`Pagination demo examples Snapshots: page-sizer 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-74 {
@@ -14575,6 +14602,7 @@ exports[`Pagination demo examples Snapshots: page-sizer 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-74 *,
@@ -14594,6 +14622,7 @@ exports[`Pagination demo examples Snapshots: page-sizer 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-67 {
@@ -14687,6 +14716,7 @@ exports[`Pagination demo examples Snapshots: page-sizer 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-68 *,
@@ -14711,6 +14741,7 @@ exports[`Pagination demo examples Snapshots: page-sizer 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-111 > button:not(:last-child),
@@ -14738,6 +14769,7 @@ exports[`Pagination demo examples Snapshots: page-sizer 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-110 *,
@@ -15185,6 +15217,7 @@ exports[`Pagination demo examples Snapshots: page-sizer 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-71 *,
@@ -18459,6 +18492,7 @@ exports[`Pagination demo examples Snapshots: previous-next 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-13 {
@@ -18481,6 +18515,7 @@ exports[`Pagination demo examples Snapshots: previous-next 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-13 *,
@@ -18505,6 +18540,7 @@ exports[`Pagination demo examples Snapshots: previous-next 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-9 > button:not(:last-child),
@@ -18532,6 +18568,7 @@ exports[`Pagination demo examples Snapshots: previous-next 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-8 *,
@@ -19377,6 +19414,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-101 {
@@ -19405,6 +19443,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-75 {
@@ -19418,6 +19457,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-95 {
@@ -19435,6 +19475,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   width: 4.65em;
 }
 
@@ -19458,6 +19499,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
   width: 4.65em;
 }
 
@@ -19742,6 +19784,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-74 *,
@@ -20072,6 +20115,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-100 *,
@@ -20101,6 +20145,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-77 *,
@@ -20228,6 +20273,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-97 *,
@@ -20252,6 +20298,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-131 > button:not(:last-child),
@@ -20279,6 +20326,7 @@ exports[`Pagination demo examples Snapshots: rtl 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-130 *,
@@ -24073,6 +24121,7 @@ exports[`Pagination demo examples Snapshots: sizes 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-40 {
@@ -24095,6 +24144,7 @@ exports[`Pagination demo examples Snapshots: sizes 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-40 *,
@@ -24119,6 +24169,7 @@ exports[`Pagination demo examples Snapshots: sizes 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-36 > button:not(:last-child),
@@ -24146,6 +24197,7 @@ exports[`Pagination demo examples Snapshots: sizes 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-35 *,
@@ -29024,6 +29076,7 @@ exports[`Pagination demo examples Snapshots: visible-range 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-34 {
@@ -29046,6 +29099,7 @@ exports[`Pagination demo examples Snapshots: visible-range 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-34 *,
@@ -29070,6 +29124,7 @@ exports[`Pagination demo examples Snapshots: visible-range 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-30 > button:not(:last-child),
@@ -29097,6 +29152,7 @@ exports[`Pagination demo examples Snapshots: visible-range 1`] = `
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
+  min-width: 0;
 }
 
 .emotion-29 *,
