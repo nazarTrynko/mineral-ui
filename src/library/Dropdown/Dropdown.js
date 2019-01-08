@@ -104,7 +104,7 @@ export default class Dropdown extends Component<DropdownProps, DropdownState> {
       tabIndex: ignoreTabIndex,
       ...restProps
     } = props;
-    const { modifiers, placement, wide } = this.props;
+    const { modifiers, placement, positionFixed, wide } = this.props;
 
     return {
       ...restProps,
@@ -112,6 +112,7 @@ export default class Dropdown extends Component<DropdownProps, DropdownState> {
       id: this.getContentId(),
       modifiers,
       placement,
+      positionFixed,
       wide
     };
   };

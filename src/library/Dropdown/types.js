@@ -26,6 +26,7 @@ export type DropdownProps = {
   onClose?: (event: SyntheticEvent<>) => void,
   onOpen?: (event: SyntheticEvent<>) => void,
   placement?: Placement,
+  positionFixed?: boolean,
   usePortal?: boolean,
   wide?: boolean
 };
@@ -64,6 +65,7 @@ export type DropdownContentProps = {
   id: string,
   modifiers?: Object,
   placement?: Placement,
+  positionFixed?: boolean,
   wide?: boolean
 };
 

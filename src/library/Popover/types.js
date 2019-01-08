@@ -24,6 +24,7 @@ export type PopoverProps = {
   onClose?: (event: SyntheticEvent<>) => void,
   onOpen?: (event: SyntheticEvent<>) => void,
   placement?: Placement,
+  positionFixed?: boolean,
   subtitle?: React$Node,
   title?: React$Node,
   triggerRef?: (node: ?React$Component<*, *>) => void,
@@ -67,6 +68,7 @@ export type PopoverContentProps = {
   modifiers?: Object,
   hasArrow?: boolean,
   placement?: Placement,
+  positionFixed?: boolean,
   subtitle?: React$Node,
   title?: React$Node
 };

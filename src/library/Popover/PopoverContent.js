@@ -1,7 +1,7 @@
 /* @flow */
 import React, { Component } from 'react';
 import PopoverArrow from './PopoverArrow';
-import Root from './RtlPopper';
+import Popper from './RtlPopper';
 import { PopoverContentWrapper, PopoverBlock, PopoverTitle } from './styled';
 import { ARROW_SIZE } from './constants';
 
@@ -11,10 +11,25 @@ export default class PopoverContent extends Component<PopoverContentProps> {
   static displayName = 'PopoverContent';
 
   render() {
-    const { children, hasArrow, placement, subtitle, title, ...restProps } = this.props;
+    const {
+      children,
+      hasArrow,
+      modifiers,
+      placement,
+      positionFixed,
+      subtitle,
+      title,
+      ...restProps
+    } = this.props;
+
+    const popperProps = {
+      modifiers,
+      placement,
+      positionFixed
+    };
 
     return (
-      <Root placement={placement}>
+      <Popper {...popperProps}>
         {({ ref, style, placement, arrowProps }) => {
           const popoverContentWrapperProps = {
             'data-placement': placement,
@@ -39,7 +54,7 @@ export default class PopoverContent extends Component<PopoverContentProps> {
             </PopoverContentWrapper>
           );
         }}
-      </Root>
+      </Popper>
     );
   }
 }

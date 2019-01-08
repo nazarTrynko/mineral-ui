@@ -1,7 +1,7 @@
 /* @flow */
 
 import { createStyledComponent } from '../../../../../../library/styles';
-import { Target } from 'react-popper';
+import { Reference } from 'react-popper';
 import Dropdown from '../../../../../../library/Dropdown';
 import data from '../../../Menu/common/menuData';
 import renderPropsDescription from '../../../common/renderPropsDescription';
@@ -15,28 +15,34 @@ control of the trigger. ${renderPropsDescription}`,
     createStyledComponent,
     data,
     Dropdown,
-    Target
+    Reference
   },
   source: `
     () => {
-      // Your root element must be a Popper Target component.
-      // import { Target } from 'react-popper';
-      const CustomTrigger = createStyledComponent(Target, {});
+      // Your render function must return a Popper Reference component.
+      // import { Reference } from 'react-popper';
+      const CustomTrigger = createStyledComponent('button', {});
 
       return (
         <Dropdown data={data}>
           {
             ({ props, state }) => {
-              const triggerProps = {
-                ...props,
-                component: 'button',
-                role: undefined
-              };
-
               return (
-                <CustomTrigger {...triggerProps}>
-                  Menu <span role="img" aria-hidden="true">{state.isOpen ? '▲' : '▼'}</span>
-                </CustomTrigger>
+                <Reference>
+                  {({ ref }) => {
+                    const triggerProps = {
+                      ...props,
+                      ref,
+                      role: undefined
+                    };
+
+                    return (
+                      <CustomTrigger {...triggerProps}>
+                        Menu <span role="img" aria-hidden="true">{state.isOpen ? '▲' : '▼'}</span>
+                      </CustomTrigger>
+                    );
+                  }}
+                </Reference>
               );
             }
           }

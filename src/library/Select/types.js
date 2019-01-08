@@ -33,6 +33,7 @@ export type SelectProps = {
   onSelect?: (item: MenuItemType, event: SyntheticEvent<>) => void,
   placeholder?: string,
   placement?: Placement,
+  positionFixed?: boolean,
   readOnly?: boolean,
   required?: boolean,
   selectedItem?: MenuItemType,

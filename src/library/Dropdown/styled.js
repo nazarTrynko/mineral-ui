@@ -1,10 +1,9 @@
 /* @flow */
 import { createStyledComponent, pxToEm } from '../styles';
-import RtlPopper from '../Popover/RtlPopper';
 import { dropdownContentTheme } from './themes';
 
-export const DropdownContentRoot = createStyledComponent(
-  RtlPopper,
+export const DropdownContentWrapper = createStyledComponent(
+  'div',
   ({ theme: baseTheme, wide }) => {
     const theme = dropdownContentTheme(baseTheme);
 

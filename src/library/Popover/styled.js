@@ -1,5 +1,4 @@
 /* @flow */
-import { Manager } from 'react-popper';
 import { createStyledComponent } from '../styles';
 import { createThemedComponent } from '../themes';
 import CardBlock from '../Card/CardBlock';
@@ -8,15 +7,13 @@ import { popoverArrowTheme, popoverContentTheme } from './themes';
 import { ARROW_SIZE } from './constants';
 
 export const PopoverRoot = createStyledComponent(
-  Manager,
+  'span',
   {
     color: null,
     display: 'inline-block'
   },
   {
-    displayName: 'Popover',
-    forwardProps: ['tag'],
-    rootEl: 'span'
+    displayName: 'Popover'
   }
 );
 
@@ -142,7 +139,7 @@ export const PopoverArrowRoot = createStyledComponent(
   }
 );
 
-export const PopoverTriggerRoot = createStyledComponent(
+export const PopoverTriggerWrapper = createStyledComponent(
   'span',
   ({ cursor }) => ({
     cursor,

@@ -1,7 +1,7 @@
 /* @flow */
 
 import { createStyledComponent } from '../../../../../../library/styles';
-import { Target } from 'react-popper';
+import { Reference } from 'react-popper';
 import Select from '../../../../../../library/Select';
 import { basicData as data } from '../../common/selectData';
 import renderPropsDescription from '../../../common/renderPropsDescription';
@@ -15,15 +15,15 @@ control of the trigger. ${renderPropsDescription}
   scope: {
     createStyledComponent,
     data,
-    Select,
-    Target
+    Reference,
+    Select
   },
   source: `
     () => {
-      // Your root element must be a Popper Target component.
-      // import { Target } from 'react-popper';
+      // Your render function must return a Popper Reference component.
+      // import { Reference } from 'react-popper';
       const CustomTrigger = createStyledComponent(
-        Target,
+        'button',
         {},
         {
           filterProps: ['isOpen', 'item', 'variant']
@@ -31,18 +31,24 @@ control of the trigger. ${renderPropsDescription}
       );
 
       const trigger = ({ props, state }) => {
-        const { isOpen, selectedItem } = state;
-        const text = selectedItem ? selectedItem.text : 'Please select...';
-        const triggerProps = {
-          ...props,
-          component: 'button',
-          role: undefined
-        };
-
         return (
-          <CustomTrigger {...triggerProps}>
-            {text} <span role="img" aria-hidden="true">{isOpen ? '▲' : '▼'}</span>
-          </CustomTrigger>
+          <Reference>
+            {({ ref }) => {
+              const { isOpen, selectedItem } = state;
+              const text = selectedItem ? selectedItem.text : 'Please select...';
+              const triggerProps = {
+                ...props,
+                ref,
+                role: undefined
+              };
+      
+              return (
+                <CustomTrigger {...triggerProps}>
+                  {text} <span role="img" aria-hidden="true">{isOpen ? '▲' : '▼'}</span>
+                </CustomTrigger>
+              );
+            }}
+          </Reference>
         );
       };
 

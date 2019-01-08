@@ -1,7 +1,7 @@
 /* @flow */
 import React, { Children, cloneElement, Component } from 'react';
 import { Reference } from 'react-popper';
-import { PopoverTriggerRoot as Root } from './styled';
+import { PopoverTriggerWrapper } from './styled';
 
 import type { PopoverTriggerProps } from './types';
 
@@ -11,22 +11,18 @@ export default class PopoverTrigger extends Component<PopoverTriggerProps> {
   render() {
     const { children, cursor, ...restProps } = this.props;
 
-
     return (
       <Reference>
         {({ ref }) => {
-          const rootProps = {
+          const popoverTriggerWrapperProps = {
             cursor,
             ref
           };
-          const props = {
-            ...restProps
-          };
 
           return (
-            <Root {...rootProps}>
-              {cloneElement(Children.only(children), props)}
-            </Root>
+            <PopoverTriggerWrapper {...popoverTriggerWrapperProps}>
+              {cloneElement(Children.only(children), restProps)}
+            </PopoverTriggerWrapper>
           );
         }}
       </Reference>
