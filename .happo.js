@@ -35,9 +35,7 @@ module.exports = {
   // from being full-width.
   rootElementSelector: '.react-live-preview',
 
-  setupScript: path.resolve(__dirname, 'utils/happoSetup.js'),
-
   plugins: [
-    happoPluginPuppeteer(),
+    happoPluginPuppeteer()
   ]
 };
